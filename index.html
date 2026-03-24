@@ -1,0 +1,3353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InChat — Cada comentário, um lead.</title>
+  <link rel="icon" type="image/png" sizes="512x512" href="brand_assets/InChat-logo.png">
+  <link rel="icon" type="image/png" sizes="256x256" href="brand_assets/InChat-logo.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="brand_assets/InChat-logo.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="brand_assets/InChat-logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="brand_assets/InChat-logo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="brand_assets/InChat-logo.png">
+  <meta name="msapplication-TileImage" content="brand_assets/InChat-logo.png">
+  <meta name="msapplication-TileColor" content="#7c5cfc">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ─── RESET ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ─── DESIGN TOKENS ─── */
+    :root {
+      --font: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Background */
+      --bg:    #fefbf6;
+      --bg-2:  #f5f4ef;
+      --bg-3:  #edeae2;
+      --white: #ffffff;
+
+      /* Text */
+      --text:   #1a1918;
+      --text-2: #6b6b65;
+      --text-3: #9e9e98;
+      --text-4: #c4c4be;
+
+      /* Accent purple */
+      --accent:       #7c5cfc;
+      --accent-soft:  rgba(124,92,252,0.08);
+      --accent-mid:   rgba(124,92,252,0.16);
+      --accent-light: #f0ecff;
+      --accent-dark:  #5a3dd6;
+
+      /* Pink (secondary brand accent) */
+      --pink:   #FF1A9C;
+      --pink-soft: rgba(255,26,156,0.08);
+
+      /* Black */
+      --black:  #0a0a09;
+
+      /* Dark (footer) */
+      --dark:        #111110;
+      --dark-2:      #1c1c1a;
+      --dark-border: rgba(255,255,255,0.07);
+
+      /* Borders */
+      --border:   #e4e0d8;
+      --border-2: #ccc9c1;
+
+      /* Shadows */
+      --shadow-xs: 0 1px 4px rgba(0,0,0,0.05);
+      --shadow-sm: 0 2px 12px rgba(0,0,0,0.07);
+      --shadow-md: 0 4px 24px rgba(0,0,0,0.09);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.11);
+
+      /* Radius */
+      --r-xs:    6px;
+      --r-sm:    10px;
+      --r-md:    14px;
+      --r-lg:    18px;
+      --r-xl:    24px;
+      --r-round: 100vw;
+
+      /* Type */
+      --h1:      clamp(2.5rem, 4.5vw, 3.75rem);
+      --h2:      clamp(1.875rem, 3.5vw, 2.875rem);
+      --h3:      clamp(1.5rem, 2.5vw, 2.125rem);
+      --h4:      1.625rem;
+      --h5:      1.25rem;
+      --body-lg: 1.1875rem;
+      --body:    1rem;
+      --body-sm: 0.9375rem;
+      --body-xs: 0.8125rem;
+      --label:   0.875rem;
+
+      /* Spacing */
+      --s-xs: 2.5rem;
+      --s-sm: 4rem;
+      --s-md: 6rem;
+      --s-lg: 8rem;
+
+      /* Legacy aliases so HTML doesn't break */
+      --text-1:   var(--text);
+      --muted:    var(--text-2);
+      --green:    var(--accent);
+      --orange:   var(--accent);
+      --cta:      var(--accent);
+      --surface:  var(--bg-2);
+      --surface-2: var(--bg-3);
+      --dark-green: var(--dark);
+      --dark-green-alt: var(--dark-2);
+      --greenish: var(--accent-light);
+      --surface-tinted: var(--accent-light);
+    }
+
+    body {
+      font-family: var(--font);
+      font-size: var(--body);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: "kern" 1, "liga" 1;
+    }
+
+    body::-webkit-scrollbar { display: none; }
+    ::selection { background: var(--accent); color: #fff; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+    /* ─── CONTAINERS ─── */
+    .container        { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .container--narrow { max-width: 900px;  margin: 0 auto; padding: 0 2rem; }
+
+    /* ─── EYEBROW ─── */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: var(--label);
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--pink);
+      flex-shrink: 0;
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: var(--font);
+      font-size: var(--body-sm);
+      font-weight: 600;
+      line-height: 1;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      border-radius: var(--r-round);
+      padding: 0.875rem 1.75rem;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+      white-space: nowrap;
+    }
+    .btn:hover  { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: var(--black);
+      color: #fff;
+      border-color: var(--black);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+    }
+    .btn-primary:hover {
+      background: #1a1a18;
+      border-color: #1a1a18;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.22), 0 0 0 3px rgba(255,26,156,0.12);
+    }
+
+    .btn-outline {
+      background: var(--white);
+      color: var(--text);
+      border-color: var(--border-2);
+      box-shadow: var(--shadow-xs);
+    }
+    .btn-outline:hover {
+      background: var(--bg-2);
+      border-color: var(--text);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 2px 12px rgba(124,92,252,0.28);
+    }
+    .btn-accent:hover {
+      background: var(--accent-dark);
+      border-color: var(--accent-dark);
+      box-shadow: 0 4px 22px rgba(124,92,252,0.36);
+    }
+
+    .btn-outline-white {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border-2);
+    }
+    .btn-outline-white:hover {
+      background: var(--bg-2);
+      border-color: var(--text);
+    }
+    /* override for actual dark bg context */
+    .cta-btn-row .btn-outline-white,
+    .footer-cta-row .btn-outline-white {
+      color: #fff;
+      border-color: rgba(255,255,255,0.32);
+      background: transparent;
+    }
+    .cta-btn-row .btn-outline-white:hover,
+    .footer-cta-row .btn-outline-white:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.55);
+    }
+
+    .btn-lg { padding: 1.0625rem 2.125rem; font-size: var(--body); }
+
+    /* ─── NAVBAR ─── */
+    #site-header { position: relative; z-index: 100; }
+
+    .nav-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 0.75rem;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0.625rem auto 0;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      transition: all 0.32s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .nav-wrap.scrolled .nav-inner {
+      max-width: 960px;
+      background: rgba(254,251,246,0.72);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(228,224,216,0.55);
+      border-radius: 20px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.75);
+      padding: 0.5rem 1.25rem;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      text-decoration: none;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    .nav-logo img { height: 34px; width: auto; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+      flex: 1;
+      justify-content: center;
+    }
+    .nav-links a {
+      font-size: var(--body-sm);
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      flex-shrink: 0;
+    }
+
+    .nav-lang {
+      display: flex;
+      align-items: center;
+      gap: 1px;
+      margin-right: 0.125rem;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.0625rem;
+      line-height: 1;
+      padding: 0.25rem 0.3125rem;
+      border-radius: var(--r-sm);
+      opacity: 0.35;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .lang-btn:hover { opacity: 0.65; transform: scale(1.12); }
+    .lang-btn--active { opacity: 1; }
+    @media (max-width: 768px) { .nav-lang { display: none; } }
+
+    .nav-signin {
+      font-size: var(--body-sm);
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--r-round);
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+    .nav-signin:hover { color: var(--text); }
+
+    /* Hide "Entrar" link when nav is scrolled (pill state) */
+    .nav-wrap.scrolled .nav-signin { display: none; }
+
+    /* Mobile burger */
+    .nav-burger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: var(--text);
+      border-radius: var(--r-sm);
+      flex-shrink: 0;
+      transition: background 0.15s;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-burger:hover { background: var(--bg-2); }
+
+    /* Mobile menu overlay */
+    .nav-mobile {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-mobile.open { transform: translateX(0); }
+
+    .nav-mobile-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 1.25rem 1.5rem 2.5rem;
+    }
+
+    .nav-mobile-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+
+    .nav-mobile-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: var(--text);
+      border-radius: var(--r-sm);
+    }
+
+    .nav-mobile-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .nav-mobile-link {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s;
+    }
+    .nav-mobile-link:hover { color: var(--accent); }
+
+    .nav-mobile-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+      padding-top: 2rem;
+    }
+
+    @media (max-width: 900px) { .nav-links { display: none; } }
+    @media (max-width: 768px) {
+      .nav-actions .nav-signin,
+      .nav-actions .btn { display: none; }
+      .nav-burger { display: flex; }
+    }
+
+    /* ─── HERO ─── */
+    @keyframes heroBlurIn {
+      from { opacity: 0; filter: blur(8px); transform: translateY(20px); }
+      to   { opacity: 1; filter: blur(0);   transform: translateY(0); }
+    }
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero {
+      position: relative;
+      background: var(--bg);
+      padding: 0;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-blob-1 {
+      width: 600px; height: 600px;
+      top: -120px; left: -100px;
+      background: radial-gradient(circle, rgba(124,92,252,0.12) 0%, transparent 70%);
+    }
+    .hero-blob-2 {
+      width: 500px; height: 500px;
+      top: -80px; right: -80px;
+      background: radial-gradient(circle, rgba(124,92,252,0.08) 0%, transparent 70%);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-content-wrap {
+      position: relative;
+      z-index: 3;
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 6.5rem 2rem 1.5rem;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── HERO AVATAR CIRCLES ─── */
+    .hero-avatars {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 0.375rem;
+    }
+    .avatar-circles {
+      display: flex;
+      align-items: center;
+    }
+    .avatar-circle-img {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid var(--white);
+      object-fit: cover;
+      display: block;
+      margin-left: -8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      transition: transform 0.18s ease;
+    }
+    .avatar-circle-img:first-child { margin-left: 0; }
+    .avatar-circles:hover .avatar-circle-img { transform: translateX(-2px); }
+    .avatar-circle-count {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid var(--white);
+      background: var(--black);
+      color: #fff;
+      font-size: 0.5rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-left: -8px;
+      flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+    .avatar-circles-label {
+      font-size: var(--body-xs);
+      font-weight: 500;
+      color: var(--text-2);
+    }
+    .avatar-circles-stars {
+      color: var(--pink);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      margin-right: 0.125rem;
+    }
+
+    .hero-anim-0 { animation: heroBlurIn 0.7s cubic-bezier(0.22,1,0.36,1) 0s    both; }
+    .hero-anim-1 { animation: heroBlurIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+    .hero-anim-2 { animation: heroBlurIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+    .hero-anim-3 { animation: heroFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.32s both; }
+    .hero-anim-4 { animation: heroFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.44s both; }
+    .hero-anim-5 { animation: heroFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.56s both; }
+    .hero-anim-6 { animation: heroFadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.70s both; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      font-size: var(--body-xs);
+      font-weight: 500;
+      padding: 0.375rem 0.875rem 0.375rem 0.5rem;
+      border-radius: var(--r-round);
+      margin-bottom: 1rem;
+      align-self: center;
+      width: fit-content;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+      text-decoration: none;
+      transition: box-shadow 0.18s, border-color 0.18s;
+    }
+    .hero-badge:hover { border-color: var(--pink); box-shadow: 0 2px 16px rgba(255,26,156,0.15); }
+
+    .badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--pink);
+      flex-shrink: 0;
+      animation: badgePulse 2.2s ease-in-out infinite;
+    }
+    @keyframes badgePulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(124,92,252,0); }
+      50%       { opacity: 0.7; box-shadow: 0 0 0 4px rgba(124,92,252,0.2); }
+    }
+    .badge-divider {
+      width: 1px; height: 14px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .badge-arrow-wrap { color: var(--text-3); }
+
+    .hero h1 {
+      font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 1rem;
+      text-wrap: balance;
+    }
+    /* Split headline into visual weight tiers */
+    .hero h1 .h1-light {
+      font-weight: 500;
+      color: var(--text-2);
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--pink);
+      font-weight: 800;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+      color: var(--text-2);
+      line-height: 1.68;
+      max-width: 560px;
+      margin: 0 auto 1.25rem;
+      font-weight: 400;
+      text-wrap: pretty;
+      letter-spacing: 0.005em;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 0.875rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn-wrap {
+      border: 1px solid rgba(10,10,9,0.12);
+      border-radius: var(--r-round);
+      padding: 3px;
+      display: inline-flex;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-2);
+      border: 1px solid var(--border);
+      font-size: var(--body-sm);
+      font-weight: 500;
+      padding: 0.6875rem 1.375rem;
+      border-radius: var(--r-round);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      transition: background 0.18s, color 0.18s, border-color 0.18s;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .btn-ghost:hover { background: var(--bg-2); color: var(--text); border-color: var(--border-2); }
+
+    .hero-proofs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.25rem 2rem;
+      margin-top: auto;
+    }
+    .hero-proof-item {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: var(--body-xs);
+      font-weight: 500;
+      color: var(--text-3);
+    }
+    .hero-proof-item .check { color: var(--pink); font-weight: 700; }
+
+    /* ─── HERO SCREENSHOT ─── */
+    .hero-screenshot-wrap {
+      position: relative;
+      z-index: 1;
+      padding: 0 2rem;
+      max-width: 980px;
+      margin: 1rem auto 0;
+    }
+
+    .hero-screenshot-fade {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .hero-screenshot-frame {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 8px 60px rgba(0,0,0,0.1), 0 2px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    /* ─── APP MOCKUP ─── */
+    .app-mockup { background: var(--bg-2); min-height: 340px; font-size: 0.75rem; }
+
+    .app-mockup-bar {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+    .app-mockup-dots { display: flex; gap: 5px; }
+    .app-mockup-dot  { width: 10px; height: 10px; border-radius: 50%; }
+    .app-mockup-dot:nth-child(1) { background: #ff5f57; }
+    .app-mockup-dot:nth-child(2) { background: #febc2e; }
+    .app-mockup-dot:nth-child(3) { background: #28c840; }
+    .app-mockup-url {
+      flex: 1; background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.3rem 0.75rem;
+      font-size: 0.6875rem; color: var(--text-3); text-align: center;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    .app-mockup-body {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      min-height: 300px;
+    }
+
+    .app-mockup-sidebar {
+      background: var(--white); border-right: 1px solid var(--border);
+      padding: 1rem 0.75rem; display: flex; flex-direction: column; gap: 0.375rem;
+    }
+    .app-sidebar-logo {
+      font-size: 0.875rem; font-weight: 700; color: var(--text);
+      padding: 0.25rem 0.5rem 0.875rem;
+      border-bottom: 1px solid var(--border); margin-bottom: 0.375rem;
+    }
+    .app-sidebar-item {
+      padding: 0.4375rem 0.625rem; border-radius: 8px;
+      color: var(--text-2); font-weight: 500; font-size: 0.7375rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .app-sidebar-item.active { background: var(--accent-soft); color: var(--accent); }
+    .app-sidebar-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor; opacity: 0.6; flex-shrink: 0;
+    }
+
+    .app-mockup-main {
+      padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    .app-stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.625rem; }
+    .app-stat-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.75rem;
+    }
+    .app-stat-num   { font-size: 1.125rem; font-weight: 700; color: var(--text); line-height: 1.1; }
+    .app-stat-label { font-size: 0.625rem; color: var(--text-3); margin-top: 0.125rem; }
+
+    .app-feed-header {
+      font-size: 0.6875rem; font-weight: 600; color: var(--text-2);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      padding-bottom: 0.375rem; border-bottom: 1px solid var(--border);
+    }
+
+    .app-feed { display: flex; flex-direction: column; gap: 0.375rem; }
+    .app-feed-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.625rem 0.75rem;
+      background: var(--white); border: 1px solid var(--border); border-radius: 8px;
+      animation: feedRow 6s ease-in-out infinite;
+      animation-fill-mode: backwards;
+    }
+    .app-feed-row:nth-child(1) { animation-delay: 0s; }
+    .app-feed-row:nth-child(2) { animation-delay: 1.8s; }
+    .app-feed-row:nth-child(3) { animation-delay: 3.6s; }
+    @keyframes feedRow {
+      0%   { opacity: 0; transform: translateX(-8px); }
+      10%  { opacity: 1; transform: translateX(0); }
+      85%  { opacity: 1; transform: translateX(0); }
+      100% { opacity: 0; transform: translateX(4px); }
+    }
+    .app-feed-avatar {
+      width: 26px; height: 26px; border-radius: 50%; background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.5rem; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .app-feed-name   { font-weight: 600; color: var(--text); flex: 1; font-size: 0.7375rem; }
+    .app-feed-action { color: var(--text-3); font-weight: 400; }
+    .app-feed-badge  {
+      font-size: 0.5625rem; font-weight: 600;
+      padding: 0.1875rem 0.5rem; border-radius: 100px;
+      background: #dcfce7; color: #16a34a;
+      flex-shrink: 0; white-space: nowrap;
+    }
+
+    /* ─── INTEGRATION BAR ─── */
+    .integration-bar {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.75rem 2rem;
+    }
+    .integration-bar.integration-bar--dark {
+      background: var(--white);
+      border-top-color: var(--border);
+      border-bottom-color: var(--border);
+    }
+
+    .integration-label {
+      text-align: center;
+      font-size: var(--body-xs);
+      font-weight: 600;
+      color: var(--text-3);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 1.125rem;
+    }
+    .integration-bar.integration-bar--dark .integration-label { color: var(--text-3); }
+
+    .integration-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 960px;
+      margin: 0 auto;
+      gap: 0.5rem;
+    }
+
+    .integration-item {
+      padding: 0.4375rem 1.125rem;
+      font-size: var(--label);
+      font-weight: 600;
+      color: var(--text-2);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-round);
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+      cursor: default;
+    }
+    .integration-item:hover {
+      color: var(--text);
+      border-color: var(--border-2);
+      background: var(--white);
+    }
+    .integration-bar.integration-bar--dark .integration-item {
+      color: var(--text-2);
+      border-color: var(--border);
+      background: var(--bg);
+    }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-bar.stats-bar--dark {
+      background: var(--bg);
+      border-bottom-color: var(--border);
+    }
+
+    .stats-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat-item {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-number {
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.04em;
+      margin-bottom: 0.375rem;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-item:nth-child(2) .stat-number,
+    .stat-item:nth-child(4) .stat-number { color: var(--pink); }
+    .stat-label { font-size: var(--body-xs); color: var(--text-2); line-height: 1.5; }
+    .stats-bar.stats-bar--dark .stat-label  { color: var(--text-2); }
+    .stats-bar.stats-bar--dark .stat-item   { border-color: var(--border); }
+
+    /* ─── SECTIONS ─── */
+    .section { padding: var(--s-md) 0; scroll-margin-top: 5rem; }
+    .section--white  { background: var(--white);  border-bottom: 1px solid var(--border); }
+    .section--grey   { background: var(--bg-2);   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .section--dark   { background: var(--white);  border-bottom: 1px solid var(--border); } /* override: no dark sections */
+    .section--greenish { background: var(--accent-light); border-top: 1px solid rgba(124,92,252,0.12); border-bottom: 1px solid rgba(124,92,252,0.12); }
+
+    /* step cards inside (formerly) dark section */
+    .section--dark .step-card {
+      background: var(--white);
+      border-color: var(--border);
+      box-shadow: var(--shadow-xs);
+    }
+    .section--dark .step-card:hover {
+      background: var(--white);
+      border-color: var(--border-2);
+      box-shadow: var(--shadow-sm);
+    }
+    .section--dark .step-number  { color: rgba(26,25,24,0.06); }
+    .section--dark .step-title   { color: var(--text); }
+    .section--dark .step-body    { color: var(--text-2); }
+    .section--dark .eyebrow      { color: var(--accent); }
+    .section--dark .section-heading { color: var(--text); }
+    .section--dark .section-sub  { color: var(--text-2); }
+
+    .section-header { margin-bottom: 3.75rem; }
+    .section-header--center { text-align: center; }
+
+    .section-heading {
+      font-size: var(--h2);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--text);
+      text-wrap: balance;
+    }
+    .section-sub {
+      font-size: var(--body);
+      color: var(--text-2);
+      line-height: 1.7;
+      max-width: 620px;
+      margin-top: 0.875rem;
+    }
+    .section-header--center .section-sub { margin-left: auto; margin-right: auto; }
+
+    /* ─── CARD GRIDS ─── */
+    .cards-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+    .cards-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.25rem; }
+
+    /* ─── PROBLEM CARDS ─── */
+    .problem-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .problem-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--border-2); }
+    .problem-card-icon  { font-size: 1.75rem; margin-bottom: 1rem; display: block; }
+    .problem-card-title { font-size: var(--h5); font-weight: 600; color: var(--text);   margin-bottom: 0.625rem; line-height: 1.35; }
+    .problem-card-body  { font-size: var(--body-sm); color: var(--text-2); line-height: 1.7; }
+
+    .callout {
+      font-size: var(--body);
+      color: var(--text-2);
+      line-height: 1.75;
+      padding: 1.625rem 1.875rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      border-left: 3px solid var(--accent);
+      margin-top: 2.25rem;
+      box-shadow: var(--shadow-xs);
+    }
+    .callout strong { color: var(--text); }
+
+    /* ─── STEP CARDS ─── */
+    .step-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .step-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--border-2); }
+
+    .step-icon { margin-bottom: 1rem; }
+    .step-icon svg { display: block; }
+
+    .step-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: rgba(26,25,24,0.06);
+      line-height: 1;
+      margin-bottom: 1rem;
+      letter-spacing: -0.04em;
+    }
+    .step-title   { font-size: var(--h5); font-weight: 600; color: var(--text);   margin-bottom: 0.625rem; line-height: 1.35; }
+    .step-body    { font-size: var(--body-sm); color: var(--text-2); line-height: 1.7; margin-bottom: 0.875rem; }
+    .step-outcome { font-size: var(--body-xs); font-weight: 600; color: var(--accent); }
+
+    /* ─── FEATURE STEPS ─── */
+    .feature-steps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      margin-top: 3.5rem;
+    }
+
+    .feature-step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .feature-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 1.375rem 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      opacity: 0.38;
+      transition: opacity 0.45s cubic-bezier(0.22,1,0.36,1);
+    }
+    .feature-step-item:first-child { padding-top: 0; }
+    .feature-step-item:last-child  { border-bottom: none; }
+    .feature-step-item.active      { opacity: 1; }
+
+    .feature-step-circle {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9375rem; font-weight: 700;
+      flex-shrink: 0;
+      color: var(--text-3);
+      background: var(--bg-2);
+      transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .feature-step-item.active .feature-step-circle {
+      background: var(--black);
+      border-color: var(--black);
+      color: #fff;
+      transform: scale(1.1);
+    }
+    .feature-step-item.done .feature-step-circle {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .feature-step-content { flex: 1; min-width: 0; }
+    .feature-step-title {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0;
+      line-height: 1.35;
+      transition: margin-bottom 0.35s ease;
+    }
+    .feature-step-item.active .feature-step-title { margin-bottom: 0.3rem; }
+    .feature-step-desc {
+      font-size: var(--body-sm);
+      color: var(--text-2);
+      line-height: 1.65;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease;
+    }
+    .feature-step-item.active .feature-step-desc {
+      max-height: 160px;
+      opacity: 1;
+    }
+
+    .feature-step-progress {
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      max-height: 0;
+      margin-top: 0;
+      opacity: 0;
+      transition: max-height 0.35s ease, margin-top 0.35s ease, opacity 0.3s ease;
+    }
+    .feature-step-item.active .feature-step-progress {
+      max-height: 4px;
+      margin-top: 0.875rem;
+      opacity: 1;
+    }
+    .feature-step-progress-bar {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.12s linear;
+    }
+
+    /* Image panel wrapper (sticky) */
+    .feature-steps-media-wrap {
+      position: sticky;
+      top: 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      overflow: visible;
+      z-index: 1;
+    }
+
+    .feature-steps-media {
+      height: 460px;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 48px rgba(0,0,0,0.09), 0 2px 16px rgba(0,0,0,0.06);
+    }
+
+    .feature-image-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.5s cubic-bezier(0.22,1,0.36,1), transform 0.5s cubic-bezier(0.22,1,0.36,1);
+    }
+    .feature-image-slide.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .feature-image-slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .feature-image-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 18%;
+      background: linear-gradient(to top, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.5) 40%, transparent 100%);
+    }
+    /* .feature-image-label removed — caption now lives below the panel */
+
+    /* ─── FEATURE MOCKUPS ─── */
+    .fmock {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      background: var(--white);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .fmock-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.625rem 1rem;
+      background: var(--bg-2);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .fmock-dots { display: flex; gap: 5px; }
+    .fmock-dots span { width: 9px; height: 9px; border-radius: 50%; background: var(--border-2); }
+    .fmock-dots span:nth-child(1) { background: #ff6057; }
+    .fmock-dots span:nth-child(2) { background: #ffc130; }
+    .fmock-dots span:nth-child(3) { background: #29cd42; }
+    .fmock-url { font-size: 0.6875rem; color: var(--text-3); font-weight: 500; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-round); padding: 0.2rem 0.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+    .fmock-body {
+      flex: 1; padding: 1.5rem;
+      overflow: hidden; display: flex; flex-direction: column; gap: 0.875rem;
+    }
+
+    /* Auth mockup */
+    .fmock-li-logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.0625rem; color: #0A66C2; }
+    .fmock-title { font-size: 1.125rem; font-weight: 700; color: var(--text); }
+    .fmock-desc { font-size: var(--body-xs); color: var(--text-2); line-height: 1.5; }
+    .fmock-perms { display: flex; flex-direction: column; gap: 0.5rem; }
+    .fmock-perm { display: flex; align-items: center; gap: 0.5rem; font-size: var(--body-xs); color: var(--text-2); }
+    .fmock-btn-primary {
+      width: 100%; padding: 0.625rem 1rem;
+      background: var(--black); color: #fff; border: none; border-radius: var(--r-round);
+      font-size: var(--body-sm); font-weight: 600; font-family: var(--font);
+      cursor: pointer; margin-top: auto;
+    }
+    .fmock-badge-api { font-size: 0.6875rem; color: var(--text-3); text-align: center; font-weight: 500; }
+
+    /* Config mockup */
+    .fmock-step-label { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.04em; color: var(--accent); text-transform: uppercase; }
+    .fmock-field { display: flex; flex-direction: column; gap: 0.3rem; }
+    .fmock-field label { font-size: 0.6875rem; font-weight: 600; color: var(--text-2); }
+    .fmock-input {
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: 0.45rem 0.75rem; font-size: var(--body-xs); color: var(--text-3);
+      background: var(--bg);
+    }
+    .fmock-input--filled { color: var(--text); background: var(--white); border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+    .fmock-textarea {
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: 0.5rem 0.75rem; font-size: 0.6875rem; color: var(--text); line-height: 1.55;
+      background: var(--bg); min-height: 56px;
+    }
+    .fmock-field-row { display: flex; gap: 1rem; }
+    .fmock-toggle-wrap { display: flex; align-items: center; gap: 0.5rem; font-size: 0.6875rem; color: var(--text-2); flex: 1; }
+    .fmock-toggle { width: 28px; height: 16px; border-radius: var(--r-round); background: var(--bg-3); border: 1px solid var(--border); position: relative; flex-shrink: 0; }
+    .fmock-toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--text-4); transition: transform 0.2s; }
+    .fmock-toggle.active { background: var(--accent); border-color: var(--accent); }
+    .fmock-toggle.active::after { background: #fff; transform: translateX(12px); }
+
+    /* DM mockup */
+    .fmock-dm-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .fmock-dm-thread { flex: 1; padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; overflow: hidden; }
+    .fmock-dm-contact { display: flex; align-items: center; gap: 0.625rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .fmock-dm-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; font-weight: 700; flex-shrink: 0; }
+    .fmock-dm-avatar--a { background: var(--accent-light); color: var(--accent); }
+    .fmock-dm-name { font-size: var(--body-xs); font-weight: 600; color: var(--text); }
+    .fmock-dm-subtitle { font-size: 0.6875rem; color: var(--text-3); }
+    .fmock-dm-time { margin-left: auto; font-size: 0.6rem; color: var(--text-4); white-space: nowrap; }
+    .fmock-dm-bubble { font-size: 0.6875rem; line-height: 1.55; padding: 0.625rem 0.875rem; border-radius: 12px; max-width: 85%; overflow-wrap: break-word; word-break: break-word; }
+    .fmock-dm-bubble--incoming { background: var(--bg-2); color: var(--text); align-self: flex-start; border-bottom-left-radius: 3px; }
+    .fmock-dm-bubble--outgoing { background: var(--accent-light); color: var(--text); align-self: flex-end; border-bottom-right-radius: 3px; }
+    .fmock-dm-link { color: var(--accent); text-decoration: underline; word-break: break-all; }
+    .fmock-dm-sig { color: var(--text-3); font-size: 0.625rem; }
+    .fmock-dm-status { display: flex; align-items: center; gap: 0.3rem; font-size: 0.6rem; color: var(--accent); font-weight: 600; align-self: flex-end; }
+    .fmock-dm-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border); }
+    .fmock-dm-stat { padding: 0.625rem; text-align: center; border-right: 1px solid var(--border); font-size: 0.6rem; color: var(--text-3); }
+    .fmock-dm-stat:last-child { border-right: none; }
+    .fmock-dm-stat-n { display: block; font-size: 1rem; font-weight: 700; color: var(--accent); line-height: 1.2; }
+
+    /* Pipeline mockup */
+    .fmock-pipeline-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .fmock-pipeline-title { font-size: var(--body-sm); font-weight: 700; color: var(--text); }
+    .fmock-pipeline-sub { font-size: 0.6rem; color: var(--text-3); margin-top: 0.125rem; }
+    .fmock-live-dot { display: flex; align-items: center; gap: 0.35rem; font-size: 0.6rem; font-weight: 700; color: var(--pink); letter-spacing: 0.05em; }
+    .fmock-live-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 0 rgba(255,26,156,0.4); animation: pulseDot 1.4s ease-out infinite; }
+    @keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(255,26,156,0.4); } 70% { box-shadow: 0 0 0 6px rgba(255,26,156,0); } 100% { box-shadow: 0 0 0 0 rgba(255,26,156,0); } }
+    .fmock-pipeline-chart { display: flex; align-items: flex-end; gap: 5px; height: 70px; padding: 0 0 0.25rem; }
+    .fmock-chart-bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; }
+    .fmock-chart-bar::before { content: ''; width: 100%; height: var(--h); background: var(--accent-soft); border-radius: 4px 4px 2px 2px; transition: height 0.3s; }
+    .fmock-chart-bar--today::before { background: var(--accent); }
+    .fmock-chart-bar span { font-size: 0.5rem; color: var(--text-3); }
+    .fmock-chart-bar--today span { color: var(--accent); font-weight: 600; }
+    .fmock-pipeline-leads { display: flex; flex-direction: column; gap: 0.5rem; overflow: hidden; }
+    .fmock-lead-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.625rem; border-radius: var(--r-sm); background: var(--bg); }
+    .fmock-lead-row--new { background: var(--accent-soft); }
+    .fmock-lead-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .fmock-lead-dot--read { background: var(--text-4); }
+    .fmock-lead-info { flex: 1; font-size: 0.6rem; color: var(--text-2); line-height: 1.4; }
+    .fmock-lead-info b { color: var(--text); }
+    .fmock-lead-badge { font-size: 0.5625rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: var(--r-round); background: var(--accent-soft); color: var(--accent); flex-shrink: 0; }
+    .fmock-lead-badge--read { background: var(--bg-3); color: var(--text-3); }
+    .fmock-lead-badge--converted { background: #dcfce7; color: #16a34a; }
+
+    @media (max-width: 768px) {
+      .feature-steps-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .feature-steps-media-wrap { position: static; }
+      .feature-steps-media { height: 240px; }
+    }
+
+    /* ─── SETUP ─── */
+    .setup-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .setup-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--border-2); }
+
+    .setup-badge {
+      display: inline-block;
+      background: var(--pink-soft);
+      color: var(--pink);
+      border: 1px solid var(--accent-mid);
+      font-size: var(--body-xs);
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--r-round);
+      margin-bottom: 1rem;
+    }
+    .setup-card-title { font-size: var(--h5); font-weight: 600; color: var(--text); margin-bottom: 0.625rem; }
+    .setup-card-body  { font-size: var(--body-sm); color: var(--text-2); line-height: 1.7; }
+
+    .setup-total-wrap { text-align: center; margin-top: 2.5rem; }
+    .setup-total {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: var(--black);
+      color: #fff;
+      padding: 1.25rem 2rem;
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .setup-total-num  { font-size: var(--h4); font-weight: 700; color: #fff; letter-spacing: -0.03em; }
+    .setup-total-sep  { color: rgba(255,255,255,0.3); font-size: 1.25rem; }
+    .setup-total-text { font-size: var(--body-sm); line-height: 1.5; }
+
+    /* ─── CUSTOMER BAR ─── */
+    .customer-bar {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+    .customer-bar-label {
+      font-size: var(--body-xs);
+      font-weight: 600;
+      color: var(--text-3);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 0.875rem;
+    }
+    .customer-names {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .customer-name {
+      padding: 0.375rem 1rem;
+      font-size: var(--body-sm);
+      font-weight: 600;
+      color: var(--text-2);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-round);
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .customer-name:hover { color: var(--text); border-color: var(--border-2); }
+
+    /* ─── DIFF TABLE ─── */
+    .diff-heading {
+      font-size: var(--h2);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      max-width: 700px;
+      margin-bottom: 1rem;
+      line-height: 1.12;
+      text-wrap: balance;
+    }
+    .diff-sub {
+      font-size: var(--body);
+      color: var(--text-2);
+      max-width: 680px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--r-lg);
+      border: 1px solid var(--border);
+      margin-bottom: 1.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .diff-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: var(--white);
+      font-size: var(--body-sm);
+    }
+
+    .diff-table thead {}
+    .diff-table th {
+      padding: 0.875rem 1.25rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-align: left;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--white);
+      color: var(--text-3);
+      box-shadow: inset 0 -1px 0 var(--border);
+      white-space: nowrap;
+    }
+    .diff-table th:nth-child(2) {
+      color: var(--accent);
+      background: var(--accent-soft);
+      box-shadow: inset 0 -2px 0 var(--accent);
+    }
+    .diff-table th:nth-child(3) { color: var(--text-4); }
+
+    /* Cells */
+    .diff-table td {
+      padding: 0.875rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-2);
+      vertical-align: middle;
+      transition: background 0.12s ease;
+    }
+    .diff-table td:nth-child(1) { font-weight: 500; color: var(--text); }
+    .diff-table td:nth-child(2) {
+      color: var(--text);
+      font-weight: 500;
+      background: rgba(124,92,252,0.04);
+    }
+    .diff-table td:nth-child(2)::before { content: '✓  '; color: var(--accent); font-weight: 700; }
+    .diff-table td:nth-child(3) { color: var(--text-3); }
+    .diff-table td:nth-child(3)::before { content: '—  '; color: var(--text-4); }
+    .diff-table tr:last-child td { border-bottom: none; }
+
+    /* Row hover */
+    .diff-table tbody tr { cursor: default; }
+    .diff-table tbody tr:hover td { background: var(--bg-2) !important; }
+    .diff-table tbody tr:hover td:nth-child(2) { background: var(--accent-soft) !important; }
+
+    .table-note {
+      font-size: var(--body-sm);
+      color: var(--text-2);
+      line-height: 1.7;
+      padding: 1.375rem 1.75rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      margin-bottom: 2.25rem;
+      box-shadow: var(--shadow-xs);
+    }
+    .table-note strong { color: var(--text); }
+
+    .diff-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .diff-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--border-2); }
+    .diff-card-icon  { margin-bottom: 1rem; }
+    .diff-card-icon svg { display: block; }
+    .diff-card-title { font-size: var(--h5); font-weight: 600; color: var(--text);   margin-bottom: 0.625rem; line-height: 1.35; }
+    .diff-card-body  { font-size: var(--body-sm); color: var(--text-2); line-height: 1.7; }
+
+    /* ─── TESTIMONIALS ─── */
+    /* ─── TESTIMONIALS ─── */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .testi-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.75rem;
+      padding: 1.25rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      background: var(--white);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      filter: blur(4px);
+      transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease, box-shadow 0.2s ease;
+    }
+    .testi-card.revealed:hover { box-shadow: var(--shadow-md); }
+    .testi-card.revealed {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* Dot-matrix texture overlay */
+    .testi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 60%;
+      background-image: radial-gradient(circle, rgba(124,92,252,0.12) 1px, transparent 1px);
+      background-size: 16px 16px;
+      -webkit-mask-image: linear-gradient(to bottom, white 0%, transparent 100%);
+      mask-image: linear-gradient(to bottom, white 0%, transparent 100%);
+      pointer-events: none;
+      border-radius: var(--r-lg) var(--r-lg) 0 0;
+    }
+
+    .testi-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .testi-meta { margin-top: -2px; }
+    .testi-name {
+      font-size: var(--body-sm);
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .testi-role {
+      display: block;
+      font-size: 0.6875rem;
+      color: var(--text-3);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      margin-top: 1px;
+    }
+    .testi-quote {
+      grid-column: 1 / -1;
+      margin-top: 0.125rem;
+      font-size: var(--body-sm);
+      font-weight: 400;
+      color: var(--text-2);
+      line-height: 1.7;
+      letter-spacing: 0.005em;
+    }
+
+    @media (max-width: 768px) { .testi-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 600px) and (max-width: 768px) { .testi-grid { grid-template-columns: repeat(2,1fr); } }
+
+    /* ─── ROI ─── */
+    .roi-section {
+      background: var(--accent-light);
+      padding: var(--s-md) 0;
+      border-top: 1px solid rgba(124,92,252,0.12);
+      border-bottom: 1px solid rgba(124,92,252,0.12);
+      text-align: center;
+    }
+    .roi-centerpiece { margin-bottom: 2.5rem; }
+    .roi-tag {
+      font-size: var(--body-xs);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 0.75rem;
+    }
+    .roi-number {
+      font-size: clamp(3rem,10vw,6.5rem);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      display: inline-block;
+      margin-bottom: 0.375rem;
+      transition: opacity 0.1s ease, transform 0.1s ease;
+    }
+    .roi-number.updating { opacity: 0.1; transform: scale(0.96) translateY(-4px); }
+    .roi-number-sub { font-size: var(--body-sm); color: var(--text-2); }
+
+    .roi-sliders {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 2.25rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem 2.5rem;
+      text-align: left;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-xs);
+    }
+    .slider-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--body-sm);
+      font-weight: 500;
+      margin-bottom: 0.625rem;
+      color: var(--text-2);
+    }
+    .slider-group label span { font-weight: 600; color: var(--text); }
+    input[type="range"] {
+      width: 100%; height: 3px;
+      -webkit-appearance: none; appearance: none;
+      background: var(--border-2);
+      border-radius: 100px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: 2.5px solid #fff;
+      box-shadow: 0 2px 8px rgba(124,92,252,0.32);
+    }
+
+    .roi-strip {
+      display: flex;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-xs);
+    }
+    .roi-strip-item { flex: 1; padding: 1.375rem 1rem; text-align: center; border-right: 1px solid var(--border); }
+    .roi-strip-item:last-child { border-right: none; background: var(--bg-2); }
+    .roi-strip-value { font-size: 1.625rem; font-weight: 800; color: var(--text); letter-spacing: -0.04em; margin-bottom: 0.25rem; }
+    .roi-strip-value--accent {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .roi-strip-label { font-size: var(--body-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); }
+    .roi-legal { font-size: var(--body-xs); color: var(--text-3); line-height: 1.6; margin-top: 1.25rem; }
+
+    /* ─── ICP ─── */
+    .icp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 2.75rem; }
+    .icp-col {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .icp-col--yes { border-color: var(--accent-mid); background: #fdfbff; }
+    .icp-col--yes:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .icp-col-label { font-size: var(--body-xs); font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 1.375rem; }
+    .icp-col--yes .icp-col-label { color: var(--accent); }
+    .icp-col--no  .icp-col-label { color: var(--text-3); }
+    .icp-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .icp-list li { font-size: var(--body-sm); line-height: 1.5; display: flex; align-items: flex-start; gap: 0.625rem; }
+    .icp-list li > span:first-child { flex-shrink: 0; margin-top: 0.125em; }
+    .icp-col--yes .icp-list li { color: var(--text); }
+    .icp-col--yes .icp-list li > span:first-child { color: var(--accent); }
+    .icp-col--no  .icp-list li { color: var(--text-2); }
+    .icp-col--no  .icp-list li > span:first-child { color: var(--text-3); }
+    .icp-note {
+      margin-top: 1.75rem;
+      font-size: var(--body-sm);
+      color: var(--text-2);
+      line-height: 1.75;
+      padding: 1.125rem 1.5rem;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-xs);
+    }
+
+    /* ─── PRICING ─── */
+    .section--pricing {
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-radial {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(124,92,252,0.06) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .pricing-inner { position: relative; z-index: 1; }
+
+    /* Title */
+    .pricing-headline {
+      text-align: center;
+      max-width: 52rem;
+      margin: 0 auto 1.5rem;
+    }
+    .pricing-h2 {
+      font-size: var(--h2);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.875rem;
+      text-wrap: balance;
+    }
+    .pricing-h2-badge {
+      display: inline-block;
+      position: relative;
+      padding-bottom: 0.15rem;
+    }
+    .pricing-h2-badge::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--pink) 100%);
+      border-radius: 2px;
+    }
+    .pricing-subtitle { font-size: var(--body-sm); color: var(--text-2); width: 70%; margin: 0 auto; }
+
+    /* Title reveal states */
+    .pricing-reveal {
+      opacity: 0;
+      transform: translateY(-20px);
+      filter: blur(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+    }
+    .pricing-reveal.revealed { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+    /* Toggle */
+    .pricing-toggle-wrap { display: flex; justify-content: center; margin-bottom: 1.5rem; }
+    .pricing-toggle-inner {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.25rem;
+    }
+    .pricing-slider {
+      position: absolute;
+      top: 0.25rem;
+      height: calc(100% - 0.5rem);
+      border-radius: 9999px;
+      background: var(--black);
+      border: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+      transition: left 0.28s cubic-bezier(0.34,1.56,0.64,1), width 0.28s cubic-bezier(0.34,1.56,0.64,1);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .pricing-toggle-btn {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      height: 3rem;
+      padding: 0 1.5rem;
+      border-radius: 9999px;
+      font-size: var(--body-sm);
+      font-weight: 500;
+      font-family: var(--font);
+      border: none;
+      background: transparent;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: color 0.18s;
+      white-space: nowrap;
+    }
+    .pricing-toggle-btn.active { color: #fff; }
+    .pricing-save-pill {
+      background: #f0ecff;
+      color: #111;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+    }
+    .pricing-toggle-btn.active .pricing-save-pill { background: rgba(255,255,255,0.2); color: #fff; }
+
+    /* Cards grid */
+    .pc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      max-width: 1100px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .pc-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(-20px);
+      filter: blur(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease, box-shadow 0.2s ease;
+    }
+    .pc-card.revealed { opacity: 1; transform: translateY(0); filter: blur(0); }
+    .pc-card.revealed:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .pc-card--popular {
+      background: var(--black);
+      border-color: var(--black);
+      outline: none;
+      box-shadow: var(--shadow-lg), 0 20px 60px rgba(124,92,252,0.14);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Gradient top stripe */
+    .pc-card--popular::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--pink) 100%);
+      border-radius: var(--r-lg) var(--r-lg) 0 0;
+    }
+    /* Subtle radial glow inside card */
+    .pc-card--popular::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 50%;
+      background: radial-gradient(ellipse at 50% 0%, rgba(124,92,252,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .pc-card--popular.revealed:hover { transform: translateY(-3px); box-shadow: 0 16px 60px rgba(124,92,252,0.22); }
+    .pc-card--popular .pc-name { color: rgba(255,255,255,0.95); }
+    .pc-card--popular .pc-desc { color: rgba(255,255,255,0.5); }
+    .pc-card--popular .pc-price-currency,
+    .pc-card--popular .pc-price-num { color: #fff; }
+    .pc-card--popular .pc-price-period { color: rgba(255,255,255,0.45); }
+    .pc-card--popular .pc-features { border-bottom-color: rgba(255,255,255,0.08); }
+    .pc-card--popular .pc-feature-icon { color: var(--accent); }
+    .pc-card--popular .pc-feature-text { color: rgba(255,255,255,0.65); }
+    .pc-card--popular .pc-includes-title { color: rgba(255,255,255,0.9); }
+    .pc-card--popular .pc-include-icon { background: rgba(124,92,252,0.2); border-color: rgba(124,92,252,0.35); }
+    .pc-card--popular .pc-include-icon svg { stroke: var(--accent); }
+    .pc-card--popular .pc-include-text { color: rgba(255,255,255,0.6); }
+
+    .pc-header { padding: 1.75rem 1.75rem 1.25rem; border-bottom: 1px solid var(--border); }
+    .pc-card--popular .pc-header { border-bottom-color: rgba(255,255,255,0.08); }
+
+    .pc-name-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5rem;
+    }
+    .pc-name { font-size: var(--h5); font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+    .pc-popular-pill {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+      color: #fff;
+      font-size: var(--body-xs);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--r-round);
+      border: none;
+      box-shadow: 0 2px 10px rgba(255,26,156,0.3);
+    }
+
+    .pc-desc { font-size: var(--body-xs); color: var(--text-2); margin-bottom: 1.25rem; line-height: 1.6; }
+
+    .pc-price-row { display: flex; align-items: baseline; gap: 0.1rem; margin-bottom: 0.25rem; }
+    .pc-price-currency { font-size: 1.25rem; font-weight: 600; color: var(--text-2); align-self: flex-start; margin-top: 0.5rem; }
+    .pc-price-num {
+      font-size: clamp(2.5rem, 4vw, 3.25rem);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.04em;
+      transition: opacity 0.18s, transform 0.18s;
+      font-variant-numeric: tabular-nums;
+    }
+    .pc-price-num.switching { opacity: 0; transform: translateY(-6px); }
+    .pc-price-period { font-size: var(--body-xs); color: var(--text-3); margin-left: 0.25rem; }
+
+    .pc-body { padding: 1.5rem 1.75rem 1.75rem; flex: 1; display: flex; flex-direction: column; }
+
+    .pc-btn {
+      display: block;
+      width: 100%;
+      padding: 0.875rem 1rem;
+      font-size: var(--body-sm);
+      font-weight: 600;
+      font-family: var(--font);
+      border-radius: var(--r-round);
+      border: 1px solid transparent;
+      cursor: pointer;
+      margin-bottom: 1.375rem;
+      text-decoration: none;
+      text-align: center;
+      transition: opacity 0.18s, box-shadow 0.18s, transform 0.15s;
+      line-height: 1;
+      letter-spacing: -0.01em;
+    }
+    .pc-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .pc-btn--blue {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 4px 14px rgba(124,92,252,0.28);
+      color: #fff;
+    }
+    .pc-btn--dark {
+      background: var(--bg-2);
+      border-color: var(--border-2);
+      color: var(--text);
+    }
+    .pc-card--popular .pc-btn--blue {
+      background: #fff;
+      border-color: #fff;
+      color: var(--black);
+      box-shadow: 0 4px 14px rgba(255,255,255,0.15);
+    }
+    .pc-card--popular .pc-btn--dark {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.8);
+    }
+
+    .pc-features {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 0.625rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .pc-feature { display: flex; align-items: flex-start; gap: 0.75rem; }
+    .pc-feature-icon { color: var(--text-3); flex-shrink: 0; margin-top: 2px; line-height: 0; }
+    .pc-feature-text { font-size: var(--body-xs); color: var(--text-2); line-height: 1.55; }
+
+    .pc-includes-title { font-size: var(--body-xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.875rem; }
+    .pc-includes { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .pc-include { display: flex; align-items: center; gap: 0.75rem; }
+    .pc-include-icon {
+      width: 18px; height: 18px;
+      background: var(--accent-soft);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pc-include-text { font-size: var(--body-xs); color: var(--text-2); }
+
+    .pricing-guarantees { text-align: center; font-size: var(--body-xs); color: var(--text-3); padding-bottom: 0.5rem; letter-spacing: 0.01em; }
+
+    @media (max-width: 768px) {
+      .pc-grid { grid-template-columns: 1fr; }
+      .pricing-subtitle { width: 90%; }
+    }
+
+    /* ─── FAQ ─── */
+    .faq-item { border-bottom: 1px solid var(--border); padding-left: 0; transition: padding-left 0.2s ease; }
+    .faq-item:first-of-type { border-top: 1px solid var(--border); }
+    .faq-item.open { padding-left: 0.75rem; border-left: 2px solid var(--pink); }
+    .faq-question {
+      padding: 1.375rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      cursor: pointer;
+      font-size: var(--body);
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.4;
+      user-select: none;
+      transition: color 0.15s;
+    }
+    .faq-question:hover { color: var(--accent); }
+    .faq-item.open .faq-question { color: var(--pink); }
+    .faq-icon {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--accent);
+      flex-shrink: 0;
+      transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+      display: inline-flex;
+      width: 26px; height: 26px;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-mid);
+      border-radius: 50%;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--pink); background: var(--pink-soft); border-color: rgba(255,26,156,0.2); }
+    .faq-answer { font-size: var(--body-sm); color: var(--text-2); line-height: 1.75; padding: 0 0 1.375rem; display: none; }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* ─── CTA FINAL ─── */
+    .cta-final {
+      background: var(--accent-light);
+      padding: var(--s-lg) 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid rgba(124,92,252,0.14);
+    }
+    .cta-bg-accent {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 40% 50%, rgba(124,92,252,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 75% 65%, rgba(255,26,156,0.07) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .cta-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-inner h2 {
+      color: var(--text);
+      font-size: var(--h2);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 1rem;
+      line-height: 1.12;
+      text-wrap: balance;
+    }
+    .cta-tension { font-size: var(--body-lg); color: var(--accent); font-weight: 700; margin-bottom: 0.875rem; }
+    .cta-sub     { font-size: var(--body); color: var(--text-2); line-height: 1.7; margin-bottom: 2rem; }
+    .cta-bullets {
+      list-style: none;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: left;
+      margin-bottom: 2.5rem;
+    }
+    .cta-bullets li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: var(--body-sm); color: var(--text-2); }
+    .cta-bullets li span:first-child { color: var(--accent); flex-shrink: 0; }
+    .cta-btn-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.875rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .cta-secondary-link { font-size: var(--body-sm); color: var(--text-3); text-decoration: none; display: block; transition: color 0.15s; margin-bottom: 1.25rem; }
+    .cta-secondary-link:hover { color: var(--text-2); }
+    .cta-guarantee { font-size: var(--body-xs); color: var(--text-3); }
+
+    /* CTA Final eyebrow in pink */
+    .cta-final .eyebrow { color: var(--pink); }
+    .cta-final .eyebrow::before { background: var(--pink); }
+
+    /* override btn-outline-white in CTA Final (light bg) */
+    .cta-final .btn-outline-white {
+      background: var(--white);
+      color: var(--text);
+      border-color: var(--border-2);
+    }
+    .cta-final .btn-outline-white:hover {
+      background: var(--bg-2);
+      border-color: var(--text);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: var(--s-md) 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-cta-block {
+      text-align: center;
+      padding: 2.75rem 0;
+      border-bottom: 1px solid var(--dark-border);
+      margin-bottom: 2.75rem;
+    }
+    .footer-cta-block h3 { font-size: var(--h5); color: #fff; font-weight: 600; margin-bottom: 0.375rem; }
+    .footer-cta-block p  { font-size: var(--body-xs); color: rgba(255,255,255,0.38); margin-bottom: 1.375rem; }
+    .footer-cta-row { display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 2.75rem; }
+    .footer-brand { max-width: 280px; }
+    .footer-logo  { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.875rem; }
+    .footer-logo img { height: 22px; width: auto; filter: brightness(0) invert(1) opacity(0.8); }
+    .footer-tagline { font-size: var(--body-xs); color: rgba(255,255,255,0.35); font-style: italic; margin-bottom: 0.625rem; }
+    .footer-brand p { font-size: var(--body-xs); color: rgba(255,255,255,0.4); line-height: 1.65; }
+    .footer-col h4 { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 1.125rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-col ul a { font-size: var(--body-xs); color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.15s; }
+    .footer-col ul a:hover { color: #fff; }
+    .footer-bottom { padding-top: 1.5rem; padding-bottom: 8rem; border-top: 1px solid var(--dark-border); font-size: var(--body-xs); color: rgba(255,255,255,0.25); text-align: center; position: relative; z-index: 1; }
+
+    /* ─── FOOTER WATERMARK ─── */
+    .footer-wordmark {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(18px);
+      font-family: var(--font);
+      font-size: 30vw; /* initial guess — JS will override to exact fill */
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      white-space: nowrap;
+      color: #2a2a27;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+      opacity: 0;
+      /* Full top visibility → fades to transparent at the bottom */
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, black 28%, rgba(0,0,0,0.25) 60%, transparent 84%);
+      mask-image: linear-gradient(to bottom, black 0%, black 28%, rgba(0,0,0,0.25) 60%, transparent 84%);
+      transition: opacity 1.6s cubic-bezier(0.22,1,0.36,1), transform 1.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .footer-wordmark.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* footer CTA buttons */
+    .footer-cta-row .btn-accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .footer-cta-row .btn-accent:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+    .footer-cta-row .btn-outline-white { background: transparent; color: #fff; border-color: rgba(255,255,255,0.28); }
+    .footer-cta-row .btn-outline-white:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
+
+    /* ─── BACK TO TOP ─── */
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      z-index: 200;
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: var(--white);
+      color: var(--text);
+      border: 1px solid var(--border-2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      pointer-events: none;
+    }
+    #back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    #back-to-top:hover { background: var(--pink); color: #fff; border-color: var(--pink); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255,26,156,0.3); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .cards-4         { grid-template-columns: repeat(2,1fr); }
+      .footer-top      { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      :root { --s-sm: 3rem; --s-md: 4.5rem; --s-lg: 6rem; }
+      .app-mockup-body  { grid-template-columns: 1fr; }
+      .app-mockup-sidebar { display: none; }
+      .cards-3          { grid-template-columns: 1fr; }
+      .testi-grid, .pricing-grid, .icp-grid { grid-template-columns: 1fr; }
+      .stats-grid       { grid-template-columns: repeat(2,1fr); }
+      .cards-4          { grid-template-columns: 1fr; }
+      .nav-links        { display: none; }
+      .roi-sliders      { grid-template-columns: 1fr; }
+      .roi-strip        { flex-wrap: wrap; }
+      .roi-strip-item   { flex: 0 0 50%; }
+      .footer-top       { grid-template-columns: 1fr 1fr; }
+      .setup-total      { flex-direction: column; gap: 0.375rem; text-align: center; }
+    }
+  </style>
+
+  <!-- Microsoft Clarity — substitua YOUR_PROJECT_ID pelo ID real em clarity.microsoft.com -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "YOUR_PROJECT_ID");
+  </script>
+</head>
+<body>
+
+<!-- NAV -->
+<header id="site-header">
+  <nav class="nav-wrap" id="main-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="brand_assets/inchat-full-logo-lightmode.png" alt="InChat">
+      </a>
+      <ul class="nav-links">
+        <li><a href="#como-funciona">Como Funciona</a></li>
+        <li><a href="#resultados">Resultados</a></li>
+        <li><a href="#precos">Preços</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <div class="nav-lang">
+        <button class="lang-btn lang-btn--active" data-lang="pt" title="Português (Brasil)">🇧🇷</button>
+        <button class="lang-btn" data-lang="en" title="English (US)">🇺🇸</button>
+      </div>
+      <div class="nav-actions">
+        <a href="#" class="nav-signin">Entrar</a>
+        <a href="#" class="btn btn-primary btn-sm">Começar Grátis</a>
+      </div>
+      <button class="nav-burger" id="nav-burger" aria-label="Abrir menu">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-mobile" id="nav-mobile">
+    <div class="nav-mobile-inner">
+      <div class="nav-mobile-top">
+        <a href="/" class="nav-logo">
+          <img src="brand_assets/inchat-full-logo-lightmode.png" alt="InChat">
+        </a>
+        <button class="nav-mobile-close" id="nav-mobile-close" aria-label="Fechar menu">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <ul class="nav-mobile-links">
+        <li><a href="#como-funciona" class="nav-mobile-link">Como Funciona</a></li>
+        <li><a href="#resultados"    class="nav-mobile-link">Resultados</a></li>
+        <li><a href="#precos"        class="nav-mobile-link">Preços</a></li>
+        <li><a href="#faq"           class="nav-mobile-link">FAQ</a></li>
+      </ul>
+      <div class="nav-mobile-actions">
+        <a href="#" class="btn btn-outline" style="width:100%;justify-content:center;">Entrar</a>
+        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">→ Começar Grátis</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob hero-blob-1" aria-hidden="true"></div>
+  <div class="hero-blob hero-blob-2" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="hero-content-wrap">
+    <div class="hero-avatars hero-anim-0">
+      <div class="avatar-circles">
+        <img class="avatar-circle-img" src="https://i.pravatar.cc/80?img=12" alt="Founder">
+        <img class="avatar-circle-img" src="https://i.pravatar.cc/80?img=33" alt="Founder">
+        <img class="avatar-circle-img" src="https://i.pravatar.cc/80?img=44" alt="Founder">
+        <img class="avatar-circle-img" src="https://i.pravatar.cc/80?img=52" alt="Founder">
+        <img class="avatar-circle-img" src="https://i.pravatar.cc/80?img=63" alt="Founder">
+        <img class="avatar-circle-img" src="https://i.pravatar.cc/80?img=7" alt="Founder">
+        <img class="avatar-circle-img" src="https://i.pravatar.cc/80?img=18" alt="Founder">
+      </div>
+    </div>
+    <a href="#como-funciona" class="hero-badge hero-anim-1">
+      <span class="badge-dot"></span>
+      <span>Lead Magnets no Piloto Automático</span>
+      <span class="badge-divider"></span>
+      <span class="badge-arrow-wrap">→</span>
+    </a>
+    <h1 class="hero-anim-2">Seu Conteúdo no LinkedIn<br>Já Está <em>Gerando Leads.</em><br><span class="h1-light">Você Só Não Está Capturando.</span></h1>
+    <p class="hero-sub hero-anim-3">Founders que publicam no LinkedIn perdem 97% dos leads porque comentário não vira conversa sozinho. O InChat fecha esse gap em 28 segundos — automático, via API oficial, sem risco para sua conta.</p>
+    <div class="hero-cta-row hero-anim-4">
+      <div class="hero-btn-wrap">
+        <a href="#" class="btn btn-primary btn-lg">→ Ativar Meu Trial Grátis — 7 Dias</a>
+      </div>
+      <a href="#como-funciona" class="btn btn-ghost btn-lg">Ver como funciona</a>
+    </div>
+    <div class="hero-proofs hero-anim-5">
+      <span class="hero-proof-item"><span class="check">✓</span> 100+ founders já automatizando</span>
+      <span class="hero-proof-item"><span class="check">✓</span> 24K+ leads gerados</span>
+      <span class="hero-proof-item"><span class="check">✓</span> Setup em 2 minutos</span>
+    </div>
+  </div>
+
+  <div class="hero-screenshot-wrap hero-anim-6">
+    <div class="hero-screenshot-fade"></div>
+    <div class="hero-screenshot-frame">
+      <div class="app-mockup">
+        <div class="app-mockup-bar">
+          <div class="app-mockup-dots">
+            <div class="app-mockup-dot"></div>
+            <div class="app-mockup-dot"></div>
+            <div class="app-mockup-dot"></div>
+          </div>
+          <div class="app-mockup-url">app.inchat.im/pipeline</div>
+        </div>
+        <div class="app-mockup-body">
+          <div class="app-mockup-sidebar">
+            <div class="app-sidebar-logo">InChat</div>
+            <div class="app-sidebar-item active"><span class="app-sidebar-dot"></span>Pipeline Ao Vivo</div>
+            <div class="app-sidebar-item"><span class="app-sidebar-dot"></span>Posts Monitorados</div>
+            <div class="app-sidebar-item"><span class="app-sidebar-dot"></span>Leads Capturados</div>
+            <div class="app-sidebar-item"><span class="app-sidebar-dot"></span>Templates DM</div>
+            <div class="app-sidebar-item"><span class="app-sidebar-dot"></span>Integrações</div>
+            <div class="app-sidebar-item"><span class="app-sidebar-dot"></span>Analytics</div>
+          </div>
+          <div class="app-mockup-main">
+            <div class="app-stats-row">
+              <div class="app-stat-card">
+                <div class="app-stat-num">47</div>
+                <div class="app-stat-label">Leads hoje</div>
+              </div>
+              <div class="app-stat-card">
+                <div class="app-stat-num">2.847</div>
+                <div class="app-stat-label">Este mês</div>
+              </div>
+              <div class="app-stat-card">
+                <div class="app-stat-num">96%</div>
+                <div class="app-stat-label">Taxa de captura</div>
+              </div>
+            </div>
+            <div class="app-feed-header">Atividade Recente</div>
+            <div class="app-feed">
+              <div class="app-feed-row">
+                <div class="app-feed-avatar">TB</div>
+                <span class="app-feed-name">Thiago Borges <span class="app-feed-action">comentou</span></span>
+                <span class="app-feed-badge">✓ Lead capturado</span>
+              </div>
+              <div class="app-feed-row">
+                <div class="app-feed-avatar" style="background:#a156ff">FC</div>
+                <span class="app-feed-name">Fernanda Castro <span class="app-feed-action">comentou</span></span>
+                <span class="app-feed-badge">✓ DM enviada</span>
+              </div>
+              <div class="app-feed-row">
+                <div class="app-feed-avatar" style="background:#5a3dd6">DM</div>
+                <span class="app-feed-name">Diego Martins <span class="app-feed-action">comentou</span></span>
+                <span class="app-feed-badge">✓ CRM sync</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATIONS BAR -->
+<div class="integration-bar integration-bar--dark">
+  <div class="integration-label">Integra com as ferramentas que você já usa</div>
+  <div class="integration-logos">
+    <span class="integration-item">HubSpot</span>
+    <span class="integration-item">Clay</span>
+    <span class="integration-item">Make</span>
+    <span class="integration-item">Salesforce</span>
+    <span class="integration-item">Zapier</span>
+    <span class="integration-item">Notion</span>
+    <span class="integration-item">LinkedIn API</span>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar stats-bar--dark">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-number">3,2M+</div>
+      <div class="stat-label">Comentários capturados</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">24K+</div>
+      <div class="stat-label">Leads gerados automaticamente</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">96%</div>
+      <div class="stat-label">Taxa de comentário para lead capturado</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">28s</div>
+      <div class="stat-label">Tempo médio de resposta automática</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEMA -->
+<section class="section section--white">
+  <div class="container">
+    <span class="eyebrow">O Problema</span>
+    <h2 class="section-heading" style="max-width:800px;">O Problema Não É Seu Conteúdo. É o Que Acontece Depois do Comentário.</h2>
+    <p class="section-sub" style="max-width:760px;">Criadores ativos no LinkedIn recebem em média 40 a 200 comentários por post. Menos de 3% viram uma conversa real. O resto evaporam — e com eles, o lead que você passou horas atraindo com conteúdo.</p>
+    <div class="cards-3" style="margin-top:3rem;">
+      <div class="problem-card">
+        <span class="problem-card-icon">⏱</span>
+        <div class="problem-card-title">Você responde tarde — e perde a janela</div>
+        <div class="problem-card-body">Um comentário tem vida ativa de 4 a 6 horas no feed do LinkedIn. Quando você finalmente abre o app para responder, a atenção do lead foi para outro lugar. Um lead quente às 9h é um lead frio às 15h. E um lead frio raramente vira cliente.</div>
+      </div>
+      <div class="problem-card">
+        <span class="problem-card-icon">🎯</span>
+        <div class="problem-card-title">Você perde o contexto — e qualifica no escuro</div>
+        <div class="problem-card-body">Quem comentou "quero saber mais"? Era um decisor com orçamento ou um curioso sem nenhuma intenção de compra? Sem captura automática, você aborda todo mundo igual — e sua taxa de resposta fica próxima de zero. Esforço máximo, resultado mínimo.</div>
+      </div>
+      <div class="problem-card">
+        <span class="problem-card-icon">🔁</span>
+        <div class="problem-card-title">Você está operando no manual — e escalando nada</div>
+        <div class="problem-card-body">Copiar link do lead magnet. Abrir o DM. Escrever a mensagem. Personalizar com o nome. Enviar. Repetir. Isso é 50 comentários vezes 3 minutos — 2,5 horas da sua semana. Todo. Maldito. Mês. Enquanto você faz isso na mão, seu concorrente tem um sistema.</div>
+      </div>
+    </div>
+    <div class="callout">
+      Você está investindo horas em conteúdo que não vai se converter — não porque o conteúdo é ruim, mas porque não existe um sistema entre o comentário e o lead.<br><br>
+      <strong>Esse sistema é o InChat.</strong>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="section section--dark" id="como-funciona">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">O Mecanismo</span>
+      <h2 class="section-heading">De "Alguém Comentou no Seu Post" Para Lead no CRM em 30 Segundos.</h2>
+      <p class="section-sub">Quatro passos. Nenhuma linha de código. Funciona enquanto você dorme.</p>
+    </div>
+
+    <div class="feature-steps-grid" id="feature-steps">
+      <!-- LEFT: Step list -->
+      <div class="feature-step-list">
+
+        <div class="feature-step-item active" data-index="0">
+          <div class="feature-step-circle">✓</div>
+          <div class="feature-step-content">
+            <div class="feature-step-title">Conecte seu LinkedIn</div>
+            <div class="feature-step-desc">Autorize via API oficial — a mesma usada por HubSpot e Salesforce. Nenhuma senha armazenada. Sua conta protegida por contrato. Você está no ar em menos de 2 minutos.</div>
+            <div class="feature-step-progress"><div class="feature-step-progress-bar"></div></div>
+          </div>
+        </div>
+
+        <div class="feature-step-item" data-index="1">
+          <div class="feature-step-circle">2</div>
+          <div class="feature-step-content">
+            <div class="feature-step-title">Adicione o que você quer entregar</div>
+            <div class="feature-step-desc">PDF, vídeo, link de inscrição, acesso a grupo — qualquer URL funciona. Configure uma vez. O InChat entrega para todo mundo que comentar, para sempre.</div>
+            <div class="feature-step-progress"><div class="feature-step-progress-bar"></div></div>
+          </div>
+        </div>
+
+        <div class="feature-step-item" data-index="2">
+          <div class="feature-step-circle">3</div>
+          <div class="feature-step-content">
+            <div class="feature-step-title">Personalize sua mensagem de DM</div>
+            <div class="feature-step-desc">Escreva a DM do jeito que você escreveria — o InChat personaliza automaticamente com o nome de quem comentou, no contexto do post. Taxa média de abertura: 89%.</div>
+            <div class="feature-step-progress"><div class="feature-step-progress-bar"></div></div>
+          </div>
+        </div>
+
+        <div class="feature-step-item" data-index="3">
+          <div class="feature-step-circle">4</div>
+          <div class="feature-step-content">
+            <div class="feature-step-title">Durma. O InChat trabalha.</div>
+            <div class="feature-step-desc">Cada comentário no seu post dispara o fluxo sozinho. DM enviada em 28 segundos. Lead capturado com nome, cargo e empresa. Contato sincronizado no seu CRM.</div>
+            <div class="feature-step-progress"><div class="feature-step-progress-bar"></div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Image panel + caption -->
+      <div class="feature-steps-media-wrap">
+      <div class="feature-steps-media">
+
+        <!-- Slide 0: LinkedIn OAuth Auth -->
+        <div class="feature-image-slide active" data-index="0" data-label="Autorização via API oficial LinkedIn">
+          <div class="fmock fmock-auth">
+            <div class="fmock-header">
+              <div class="fmock-dots"><span></span><span></span><span></span></div>
+              <div class="fmock-url">linkedin.com/oauth/authorize</div>
+            </div>
+            <div class="fmock-body">
+              <div class="fmock-li-logo">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="#0A66C2"/><path d="M7 11h3v10H7V11Zm1.5-4.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM13 11h2.8v1.4h.04c.4-.74 1.36-1.52 2.8-1.52 3 0 3.56 1.97 3.56 4.54V21h-3v-5c0-1.2-.02-2.74-1.67-2.74-1.67 0-1.93 1.3-1.93 2.65V21H13V11Z" fill="#fff"/></svg>
+                <span>LinkedIn</span>
+              </div>
+              <h3 class="fmock-title">Autorizar InChat</h3>
+              <p class="fmock-desc">InChat gostaria de acessar sua conta LinkedIn para enviar mensagens em seu nome.</p>
+              <div class="fmock-perms">
+                <div class="fmock-perm"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 4" stroke="#22c55e" stroke-width="1.75" stroke-linecap="round"/></svg><span>Enviar mensagens diretas</span></div>
+                <div class="fmock-perm"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 4" stroke="#22c55e" stroke-width="1.75" stroke-linecap="round"/></svg><span>Ler notificações de comentários</span></div>
+                <div class="fmock-perm"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5L5.5 10.5L11.5 4" stroke="#22c55e" stroke-width="1.75" stroke-linecap="round"/></svg><span>Acesso via API oficial — sem scraping</span></div>
+              </div>
+              <button class="fmock-btn-primary">Autorizar Acesso</button>
+              <div class="fmock-badge-api">🔒 API Oficial · Zero risco de ban</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 1: Lead Magnet Config -->
+        <div class="feature-image-slide" data-index="1" data-label="Lead magnet configurado em 5 minutos">
+          <div class="fmock fmock-config">
+            <div class="fmock-header">
+              <div class="fmock-dots"><span></span><span></span><span></span></div>
+              <div class="fmock-url">app.inchat.im/lead-magnet/novo</div>
+            </div>
+            <div class="fmock-body">
+              <div class="fmock-step-label">Passo 2 de 3 · Configurar Lead Magnet</div>
+              <div class="fmock-field">
+                <label>Palavra-chave de ativação</label>
+                <div class="fmock-input fmock-input--filled">PDF</div>
+              </div>
+              <div class="fmock-field">
+                <label>Link do lead magnet</label>
+                <div class="fmock-input fmock-input--filled">drive.google.com/seu-ebook.pdf</div>
+              </div>
+              <div class="fmock-field">
+                <label>Mensagem personalizada</label>
+                <div class="fmock-textarea">Oi {primeiro_nome}! Vi seu comentário pedindo o PDF. Aqui está o link exclusivo: {link} 🎯</div>
+              </div>
+              <div class="fmock-field-row">
+                <div class="fmock-toggle-wrap"><span>Seguir lead após DM</span><div class="fmock-toggle active"></div></div>
+                <div class="fmock-toggle-wrap"><span>Notificar por e-mail</span><div class="fmock-toggle"></div></div>
+              </div>
+              <button class="fmock-btn-primary">Salvar e Ativar →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: DM Preview -->
+        <div class="feature-image-slide" data-index="2" data-label="DM enviada em 28s com 89% de abertura">
+          <div class="fmock fmock-dm">
+            <div class="fmock-header">
+              <div class="fmock-dots"><span></span><span></span><span></span></div>
+              <div class="fmock-url">LinkedIn · Mensagens</div>
+            </div>
+            <div class="fmock-dm-body">
+              <div class="fmock-dm-thread">
+                <div class="fmock-dm-contact">
+                  <div class="fmock-dm-avatar fmock-dm-avatar--a">MR</div>
+                  <div>
+                    <div class="fmock-dm-name">Mariana Ribeiro</div>
+                    <div class="fmock-dm-subtitle">Comentou: "PDF por favor!"</div>
+                  </div>
+                  <div class="fmock-dm-time">agora</div>
+                </div>
+                <div class="fmock-dm-bubble fmock-dm-bubble--incoming">PDF por favor! 🙌</div>
+                <div class="fmock-dm-bubble fmock-dm-bubble--outgoing">
+                  Oi Mariana! Vi seu comentário pedindo o PDF. Aqui está o link exclusivo:<br>
+                  <span class="fmock-dm-link">drive.google.com/ebook-linkedin.pdf</span> 🎯<br>
+                  <span class="fmock-dm-sig">— InChat Bot · enviado em 28s</span>
+                </div>
+                <div class="fmock-dm-status">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7.5l3 3 7-7" stroke="#7c5cfc" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  Lida · Taxa de abertura: 89%
+                </div>
+              </div>
+              <div class="fmock-dm-stats">
+                <div class="fmock-dm-stat"><span class="fmock-dm-stat-n">247</span><span>DMs hoje</span></div>
+                <div class="fmock-dm-stat"><span class="fmock-dm-stat-n">89%</span><span>Abertura</span></div>
+                <div class="fmock-dm-stat"><span class="fmock-dm-stat-n">28s</span><span>Resposta</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: Live Pipeline 24/7 -->
+        <div class="feature-image-slide" data-index="3" data-label="Leads entrando 24/7, mesmo offline">
+          <div class="fmock fmock-pipeline">
+            <div class="fmock-header">
+              <div class="fmock-dots"><span></span><span></span><span></span></div>
+              <div class="fmock-url">app.inchat.im/pipeline</div>
+            </div>
+            <div class="fmock-body">
+              <div class="fmock-pipeline-header">
+                <div>
+                  <div class="fmock-pipeline-title">Pipeline ao Vivo</div>
+                  <div class="fmock-pipeline-sub">Atualizado há 4 segundos</div>
+                </div>
+                <div class="fmock-live-dot"><span class="fmock-live-pulse"></span>LIVE</div>
+              </div>
+              <div class="fmock-pipeline-chart">
+                <div class="fmock-chart-bar" style="--h:55%"><span>Seg</span></div>
+                <div class="fmock-chart-bar" style="--h:72%"><span>Ter</span></div>
+                <div class="fmock-chart-bar" style="--h:48%"><span>Qua</span></div>
+                <div class="fmock-chart-bar" style="--h:88%"><span>Qui</span></div>
+                <div class="fmock-chart-bar" style="--h:64%"><span>Sex</span></div>
+                <div class="fmock-chart-bar fmock-chart-bar--today" style="--h:95%"><span>Hoje</span></div>
+              </div>
+              <div class="fmock-pipeline-leads">
+                <div class="fmock-lead-row fmock-lead-row--new">
+                  <div class="fmock-lead-dot"></div>
+                  <div class="fmock-lead-info"><b>Carlos Mendes</b> · CEO @ Techflow<br><span>Comentou "PDF" · DM enviada · 12:47</span></div>
+                  <div class="fmock-lead-badge">Novo</div>
+                </div>
+                <div class="fmock-lead-row">
+                  <div class="fmock-lead-dot fmock-lead-dot--read"></div>
+                  <div class="fmock-lead-info"><b>Ana Souza</b> · Head Growth @ B2B Labs<br><span>DM lida · Clicou no link · 11:23</span></div>
+                  <div class="fmock-lead-badge fmock-lead-badge--read">Lida</div>
+                </div>
+                <div class="fmock-lead-row">
+                  <div class="fmock-lead-dot fmock-lead-dot--read"></div>
+                  <div class="fmock-lead-info"><b>Rafael Lima</b> · Founder @ ScaleUp<br><span>Download confirmado · 09:55</span></div>
+                  <div class="fmock-lead-badge fmock-lead-badge--converted">Lead</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /feature-steps-media -->
+      </div><!-- /feature-steps-media-wrap -->
+    </div>
+  </div>
+</section>
+
+<!-- SETUP -->
+<section class="section section--white">
+  <div class="container">
+    <span class="eyebrow">Sem Onboarding Obrigatório</span>
+    <h2 class="section-heading">Você Ativa Hoje. Primeiro Lead Automático Ainda Hoje.</h2>
+    <p class="section-sub">Do zero ao pipeline automático em menos de 15 minutos. Sem engenheiro. Sem integração complicada.</p>
+    <div class="cards-3" style="margin-top:3rem;">
+      <div class="setup-card">
+        <div class="setup-badge">~2 min</div>
+        <div class="setup-card-title">Conecte seu LinkedIn</div>
+        <div class="setup-card-body">Autorize via API oficial com 2 cliques. Nenhuma senha armazenada. Sua conta está protegida contratualmente a partir desse momento.</div>
+      </div>
+      <div class="setup-card">
+        <div class="setup-badge">~5 min</div>
+        <div class="setup-card-title">Configure seu lead magnet</div>
+        <div class="setup-card-body">Cole a URL do seu recurso. Escreva a DM que será enviada. Escolha quais posts monitorar. Ative. Está feito.</div>
+      </div>
+      <div class="setup-card">
+        <div class="setup-badge">~3 min</div>
+        <div class="setup-card-title">Publique seu próximo post</div>
+        <div class="setup-card-body">A partir daqui, cada comentário dispara o fluxo sozinho. DM em 28 segundos. Lead no CRM. Para sempre, sem você tocar.</div>
+      </div>
+    </div>
+    <div class="setup-total-wrap">
+      <div class="setup-total">
+        <span class="setup-total-num">15 min</span>
+        <span class="setup-total-sep">→</span>
+        <span class="setup-total-text">Pipeline automático no ar.<br>Primeiro lead ainda hoje.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CUSTOMER BAR -->
+<div class="customer-bar">
+  <div class="customer-bar-label">Usado por founders de</div>
+  <div class="customer-names">
+    <span class="customer-name">Flexi</span>
+    <span class="customer-name">OSA Growth</span>
+    <span class="customer-name">LeadUp</span>
+    <span class="customer-name">ScaleB2B</span>
+    <span class="customer-name">Ventures BR</span>
+    <span class="customer-name">AgênciaCrescer</span>
+  </div>
+</div>
+
+<!-- DIFERENCIAÇÃO -->
+<section class="section section--grey">
+  <div class="container">
+    <span class="eyebrow">Por Que InChat</span>
+    <h2 class="diff-heading">Seu Concorrente Usa Scraper. Sua Conta Vai Pagar o Preço.</h2>
+    <p class="diff-sub">O InChat opera via API oficial do LinkedIn — a mesma infraestrutura que o HubSpot e o Salesforce usam. Não é detalhe técnico. É a diferença entre uma ferramenta que você usa amanhã e uma que pode custar sua conta essa semana.</p>
+    <div class="table-wrap">
+      <table class="diff-table">
+        <thead>
+          <tr>
+            <th>Recurso</th>
+            <th>InChat ✓</th>
+            <th>Ferramentas com scraper</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Tecnologia de acesso</td><td>API oficial LinkedIn — zero risco de ban</td><td>Scraping — viola os Termos de Serviço</td></tr>
+          <tr><td>Risco para sua conta</td><td>Nenhum. Protegido contratualmente.</td><td>Alto. Contas sendo banidas sem aviso.</td></tr>
+          <tr><td>DM personalizada</td><td>Com nome + contexto do comentário</td><td>Genérica ou padronizada</td></tr>
+          <tr><td>Velocidade de resposta</td><td>Menos de 30 segundos</td><td>Minutos a horas de delay</td></tr>
+          <tr><td>Lead no CRM</td><td>Tempo real, automático</td><td>Requer configuração adicional</td></tr>
+          <tr><td>Integrações BR</td><td>Clay, HubSpot, Make, Notion, Zapier</td><td>Limitado ou apenas em inglês</td></tr>
+          <tr><td>Suporte</td><td>PT-BR nativo, chat no plano Pro</td><td>Inglês, ticket, demora</td></tr>
+          <tr><td>Setup</td><td>2 minutos, sem desenvolvedor</td><td>Requer configuração técnica</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-note">
+      Se você usar uma ferramenta que faz scraping e o LinkedIn atualizar os Termos de Serviço amanhã — e eles fazem isso regularmente — você perde tudo do dia para a noite. Com o InChat, você está protegido pela mesma política que cobre as maiores plataformas de CRM do mundo. Essa não é uma escolha de feature. <strong>É uma escolha de risco.</strong>
+    </div>
+    <div class="cards-3">
+      <div class="diff-card">
+        <div class="diff-card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 3L5 8v7c0 6.55 4.68 12.68 11 14 6.32-1.32 11-7.45 11-14V8L16 3z" fill="rgba(124,92,252,.1)" stroke="#7c5cfc" stroke-width="1.5" stroke-linejoin="round"/><path d="M11 16l3.5 3.5L21 13" stroke="#7c5cfc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="diff-card-title">Segurança Real, Não Marketing</div>
+        <div class="diff-card-body">Enquanto ferramentas concorrentes usam scrapers e extensões de Chrome que violam os Termos de Uso do LinkedIn, o InChat opera via API oficial certificada. Nenhuma conta InChat sofreu penalidade até hoje. Se isso mudar algum dia, você saberá antes de qualquer cobrança.</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="14" cy="14" r="8" stroke="#7c5cfc" stroke-width="1.5"/><path d="M20 20l6 6" stroke="#7c5cfc" stroke-width="1.5" stroke-linecap="round"/><path d="M11 14h6M14 11v6" stroke="#7c5cfc" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="diff-card-title">Contexto, Não Só Volume</div>
+        <div class="diff-card-body">Não é só capturar quem comentou. O InChat registra o que a pessoa comentou, em qual post, e em que momento — para que você saiba a intenção do lead, não só o nome. Um lead que comentou "preciso disso para ontem" é diferente de um que comentou "interessante".</div>
+      </div>
+      <div class="diff-card">
+        <div class="diff-card-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="11" fill="rgba(124,92,252,.08)" stroke="#7c5cfc" stroke-width="1.5"/><path d="M5 16h22M16 5c-3 4-4 7-4 11s1 7 4 11M16 5c3 4 4 7 4 11s-1 7-4 11" stroke="#7c5cfc" stroke-width="1.2"/><text x="10" y="20" font-size="8" font-weight="700" fill="#7c5cfc">BR</text></svg></div>
+        <div class="diff-card-title">Construído para o Mercado Brasileiro</div>
+        <div class="diff-card-body">Interface em português. Suporte em PT-BR. Integrações com as ferramentas que founders brasileiros já usam — Clay, RD Station, HubSpot, Make, Notion, Zapier. Sem barreira de idioma. Sem adaptações improvisadas.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section section--white" id="resultados">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Resultados Reais</span>
+      <h2 class="section-heading">Founders Como Você. Resultados que Falam por Si.</h2>
+      <p class="section-sub">Não depoimentos vagos. Números reais, nomes reais, empresas reais.</p>
+    </div>
+    <div class="testi-grid">
+
+      <div class="testi-card">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=12" alt="Thiago Borges" loading="lazy">
+        <div class="testi-meta">
+          <p class="testi-name">Thiago Borges</p>
+          <span class="testi-role">Founder · AgênciaCrescer</span>
+        </div>
+        <blockquote class="testi-quote">Às 9h28 do dia seguinte ao post, o primeiro lead já estava no meu CRM com nome, cargo e empresa. 47 leads em 11 dias. Fechei 3 clientes naquele mês.</blockquote>
+      </div>
+
+      <div class="testi-card">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=47" alt="Fernanda Castro" loading="lazy">
+        <div class="testi-meta">
+          <p class="testi-name">Fernanda Castro</p>
+          <span class="testi-role">Consultora · FC Marketing Digital</span>
+        </div>
+        <blockquote class="testi-quote">O que antes era curtida virou conversa — e conversa virou cliente. R$ 12.400 em 30 dias. O retorno foi visível na primeira semana. Não tem volta.</blockquote>
+      </div>
+
+      <div class="testi-card">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=52" alt="Diego Martins" loading="lazy">
+        <div class="testi-meta">
+          <p class="testi-name">Diego Martins</p>
+          <span class="testi-role">CEO · ScaleB2B</span>
+        </div>
+        <blockquote class="testi-quote">800 comentários em 48h. O InChat capturou 260 leads qualificados durante a madrugada, enquanto eu dormia. Isso nunca seria possível na mão.</blockquote>
+      </div>
+
+      <div class="testi-card">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=56" alt="Juliana Neves" loading="lazy">
+        <div class="testi-meta">
+          <p class="testi-name">Juliana Neves</p>
+          <span class="testi-role">Head of Growth · Ventures BR</span>
+        </div>
+        <blockquote class="testi-quote">Duas ferramentas anteriores quase me baniram. Com InChat uso API oficial, durmo tranquila e recebo leads todos os dias. Minha conta está intacta.</blockquote>
+      </div>
+
+      <div class="testi-card">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=33" alt="Rodrigo Lima" loading="lazy">
+        <div class="testi-meta">
+          <p class="testi-name">Rodrigo Lima</p>
+          <span class="testi-role">Founder · OSA Growth</span>
+        </div>
+        <blockquote class="testi-quote">Publiquei segunda-feira. Na quarta já tinha 19 leads qualificados no HubSpot, sincronizados automaticamente. Nunca imaginei que seria tão simples.</blockquote>
+      </div>
+
+      <div class="testi-card">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=44" alt="Carolina Vieira" loading="lazy">
+        <div class="testi-meta">
+          <p class="testi-name">Carolina Vieira</p>
+          <span class="testi-role">CMO · LeadUp Brasil</span>
+        </div>
+        <blockquote class="testi-quote">Gerencio LinkedIn de 6 clientes com o plano Agency. O dashboard multi-workspace é exatamente o que precisávamos. Escalamos sem contratar mais ninguém.</blockquote>
+      </div>
+
+      <div class="testi-card">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=15" alt="Bruno Alves" loading="lazy">
+        <div class="testi-meta">
+          <p class="testi-name">Bruno Alves</p>
+          <span class="testi-role">CEO · Flexi Soluções</span>
+        </div>
+        <blockquote class="testi-quote">A taxa de abertura das DMs chegou a 91% no primeiro mês. Nunca tive um canal com esse nível de engajamento. O InChat mudou completamente minha estratégia de outbound.</blockquote>
+      </div>
+
+      <div class="testi-card">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=29" alt="Mariana Fonseca" loading="lazy">
+        <div class="testi-meta">
+          <p class="testi-name">Mariana Fonseca</p>
+          <span class="testi-role">Diretora · Crescimento Digital BR</span>
+        </div>
+        <blockquote class="testi-quote">Configurei em 12 minutos — sem ajuda de dev. O setup foi mais rápido do que criar uma planilha. No mesmo dia já tinha o primeiro lead qualificado no pipeline.</blockquote>
+      </div>
+
+      <div class="testi-card">
+        <img class="testi-avatar" src="https://i.pravatar.cc/80?img=60" alt="Paulo Henrique" loading="lazy">
+        <div class="testi-meta">
+          <p class="testi-name">Paulo Henrique</p>
+          <span class="testi-role">Sócio · PH Consultoria B2B</span>
+        </div>
+        <blockquote class="testi-quote">Rodei um post sobre precificação e o InChat trabalhou sozinho durante o fim de semana. Voltei na segunda com 38 leads novos e 4 reuniões já agendadas no calendário.</blockquote>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section class="roi-section">
+  <div class="container--narrow">
+    <span class="eyebrow">Calculadora de Impacto</span>
+    <h2 class="section-heading">Quanto Você Está Perdendo Sem o InChat Hoje?</h2>
+    <p class="section-sub" style="margin: 0.75rem auto 2.5rem;">Ajuste com seus números reais. O resultado vai doer — de propósito.</p>
+    <div class="roi-centerpiece">
+      <div class="roi-tag">Receita não capturada por mês</div>
+      <div class="roi-number" id="out-revenue">—</div>
+      <div class="roi-number-sub">baseado nos seus números abaixo</div>
+    </div>
+    <div class="roi-sliders">
+      <div class="slider-group">
+        <label>Posts por semana <span id="val-posts">3</span></label>
+        <input type="range" id="posts" min="1" max="7" value="3" oninput="updateROI()">
+      </div>
+      <div class="slider-group">
+        <label>Comentários por post <span id="val-comments">50</span></label>
+        <input type="range" id="comments" min="10" max="200" value="50" oninput="updateROI()">
+      </div>
+      <div class="slider-group">
+        <label>Taxa de conversão <span id="val-rate">5%</span></label>
+        <input type="range" id="rate" min="1" max="15" value="5" oninput="updateROI()">
+      </div>
+      <div class="slider-group">
+        <label>Ticket médio <span id="val-ticket">R$500</span></label>
+        <input type="range" id="ticket" min="97" max="5000" value="500" step="50" oninput="updateROI()">
+      </div>
+    </div>
+    <div class="roi-strip">
+      <div class="roi-strip-item">
+        <div class="roi-strip-value" id="out-leads">—</div>
+        <div class="roi-strip-label">Leads perdidos/mês</div>
+      </div>
+      <div class="roi-strip-item">
+        <div class="roi-strip-value" id="out-conversions">—</div>
+        <div class="roi-strip-label">Conversões potenciais</div>
+      </div>
+      <div class="roi-strip-item">
+        <div class="roi-strip-value roi-strip-value--accent" id="out-roi">—</div>
+        <div class="roi-strip-label">ROI estimado</div>
+      </div>
+      <div class="roi-strip-item">
+        <div class="roi-strip-value">R$110/mês</div>
+        <div class="roi-strip-label">A partir de (Starter)</div>
+      </div>
+    </div>
+    <a href="#" class="btn btn-primary btn-lg">→ Ativar o InChat e parar de deixar na mesa</a>
+    <p class="roi-legal">Calculado com base em: (posts/semana × 4,3) × comentários/post × taxa de conversão × ticket médio. Estimativa conservadora. Resultados reais variam conforme nicho, audiência e oferta.</p>
+  </div>
+</section>
+
+<!-- ICP QUALIFIER -->
+<section class="section section--white">
+  <div class="container">
+    <span class="eyebrow">Para Quem É</span>
+    <h2 class="section-heading">O InChat Foi Construído Para Você?</h2>
+    <div class="icp-grid">
+      <div class="icp-col icp-col--yes">
+        <div class="icp-col-label">É para você se:</div>
+        <ul class="icp-list">
+          <li><span>✓</span><span>Você publica conteúdo no LinkedIn pelo menos 2 vezes por semana</span></li>
+          <li><span>✓</span><span>Você tem ou está construindo uma oferta B2B com ticket acima de R$200</span></li>
+          <li><span>✓</span><span>Você quer transformar engajamento em pipeline previsível</span></li>
+          <li><span>✓</span><span>Você acredita que sistema inteligente supera esforço manual</span></li>
+          <li><span>✓</span><span>Você quer escalar sem contratar mais pessoas para fazer follow-up</span></li>
+          <li><span>✓</span><span>Você já tem pelo menos 500 seguidores no LinkedIn</span></li>
+          <li><span>✓</span><span>Você tem ao menos um recurso para entregar (PDF, vídeo, link, acesso)</span></li>
+        </ul>
+      </div>
+      <div class="icp-col icp-col--no">
+        <div class="icp-col-label">Ainda não é para você se:</div>
+        <ul class="icp-list">
+          <li><span>✗</span><span>Você não produz conteúdo no LinkedIn com regularidade</span></li>
+          <li><span>✗</span><span>Você não tem nenhuma oferta ou produto para vender</span></li>
+          <li><span>✗</span><span>Você busca uma ferramenta de disparo em massa ou spam</span></li>
+          <li><span>✗</span><span>Você não tem nenhum recurso para entregar em troca do comentário</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="icp-note">
+      Se você ainda não publica regularmente no LinkedIn, comece por isso primeiro. O InChat vai multiplicar o que você já tem — não criar audiência do zero. Quando você estiver pronto, estaremos aqui.
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section section--pricing" id="precos">
+  <div class="pricing-radial" aria-hidden="true"></div>
+  <div class="pricing-inner container">
+
+    <!-- Headline -->
+    <div class="pricing-headline">
+      <span class="eyebrow pricing-reveal" data-pricing-delay="0">Preços</span>
+      <h2 class="pricing-h2 pricing-reveal" data-pricing-delay="0.1">
+        Planos que funcionam para o seu
+        <span class="pricing-h2-badge">negócio</span>
+      </h2>
+      <p class="pricing-subtitle pricing-reveal" data-pricing-delay="0.2">7 dias de trial grátis em qualquer plano. Sem cartão. Cancele quando quiser.</p>
+    </div>
+
+    <!-- Toggle -->
+    <div class="pricing-toggle-wrap pricing-reveal" data-pricing-delay="0.3">
+      <div class="pricing-toggle-inner" id="pricing-toggle-inner">
+        <div class="pricing-slider" id="pricing-slider"></div>
+        <button class="pricing-toggle-btn active" id="toggle-monthly" onclick="switchPricing('monthly')">Mensal</button>
+        <button class="pricing-toggle-btn" id="toggle-annual" onclick="switchPricing('annual')">
+          Anual
+          <span class="pricing-save-pill">Economize 20%</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="pc-grid">
+
+      <!-- Starter -->
+      <div class="pc-card pricing-reveal" data-pricing-delay="0.4">
+        <div class="pc-header">
+          <div class="pc-name-row">
+            <span class="pc-name">Starter</span>
+          </div>
+          <p class="pc-desc">Para quem está começando a monetizar sua audiência no LinkedIn</p>
+          <div class="pc-price-row">
+            <span class="pc-price-currency">R$</span>
+            <span class="pc-price-num" data-monthly="110" data-annual="88">110</span>
+            <span class="pc-price-period" id="period-starter">/mês</span>
+          </div>
+        </div>
+        <div class="pc-body">
+          <a href="#" class="pc-btn pc-btn--dark">Começar com Starter</a>
+          <ul class="pc-features">
+            <li class="pc-feature">
+              <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
+              <span class="pc-feature-text">Automação em até 3 posts simultâneos</span>
+            </li>
+            <li class="pc-feature">
+              <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
+              <span class="pc-feature-text">Até 3 lead magnets ativos</span>
+            </li>
+            <li class="pc-feature">
+              <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></span>
+              <span class="pc-feature-text">DM personalizada com nome do comentarista</span>
+            </li>
+          </ul>
+          <p class="pc-includes-title">Starter inclui:</p>
+          <ul class="pc-includes">
+            <li class="pc-include">
+              <span class="pc-include-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2.5"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg></span>
+              <span class="pc-include-text">Exportação de leads em CSV</span>
+            </li>
+            <li class="pc-include">
+              <span class="pc-include-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2.5"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg></span>
+              <span class="pc-include-text">Analytics básico por campanha</span>
+            </li>
+            <li class="pc-include">
+              <span class="pc-include-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2.5"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg></span>
+              <span class="pc-include-text">Suporte via email (PT-BR)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Pro (popular) -->
+      <div class="pc-card pc-card--popular pricing-reveal" data-pricing-delay="0.8">
+        <div class="pc-header">
+          <div class="pc-name-row">
+            <span class="pc-name">Pro</span>
+            <span class="pc-popular-pill">Popular</span>
+          </div>
+          <p class="pc-desc">Para founders levando LinkedIn a sério e que querem pipeline previsível</p>
+          <div class="pc-price-row">
+            <span class="pc-price-currency">R$</span>
+            <span class="pc-price-num" data-monthly="170" data-annual="136">170</span>
+            <span class="pc-price-period" id="period-pro">/mês</span>
+          </div>
+        </div>
+        <div class="pc-body">
+          <a href="#" class="pc-btn pc-btn--blue">Ativar Pro — 7 Dias Grátis</a>
+          <ul class="pc-features">
+            <li class="pc-feature">
+              <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
+              <span class="pc-feature-text">Automação de comentários em tempo real (24/7)</span>
+            </li>
+            <li class="pc-feature">
+              <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
+              <span class="pc-feature-text">Lead magnets ilimitados + qualificação com IA</span>
+            </li>
+            <li class="pc-feature">
+              <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></span>
+              <span class="pc-feature-text">Integrações: Clay, HubSpot, Make, Zapier</span>
+            </li>
+          </ul>
+          <p class="pc-includes-title">Tudo do Starter, mais:</p>
+          <ul class="pc-includes">
+            <li class="pc-include">
+              <span class="pc-include-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2.5"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg></span>
+              <span class="pc-include-text">Multi-post monitorado simultaneamente</span>
+            </li>
+            <li class="pc-include">
+              <span class="pc-include-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2.5"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg></span>
+              <span class="pc-include-text">Analytics avançado por post e campanha</span>
+            </li>
+            <li class="pc-include">
+              <span class="pc-include-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2.5"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg></span>
+              <span class="pc-include-text">Suporte prioritário via chat (PT-BR)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Agency -->
+      <div class="pc-card pricing-reveal" data-pricing-delay="1.2">
+        <div class="pc-header">
+          <div class="pc-name-row">
+            <span class="pc-name">Agency</span>
+          </div>
+          <p class="pc-desc">Para agências gerenciando LinkedIn de múltiplos clientes</p>
+          <div class="pc-price-row">
+            <span class="pc-price-currency">R$</span>
+            <span class="pc-price-num" data-monthly="580" data-annual="464">580</span>
+            <span class="pc-price-period" id="period-agency">/mês</span>
+          </div>
+        </div>
+        <div class="pc-body">
+          <a href="#" class="pc-btn pc-btn--dark">Falar com a Equipe Agency →</a>
+          <ul class="pc-features">
+            <li class="pc-feature">
+              <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
+              <span class="pc-feature-text">Até 5 workspaces independentes por cliente</span>
+            </li>
+            <li class="pc-feature">
+              <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span>
+              <span class="pc-feature-text">White-label + dashboard multi-cliente</span>
+            </li>
+            <li class="pc-feature">
+              <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></span>
+              <span class="pc-feature-text">SLA de suporte 4 horas com especialista</span>
+            </li>
+          </ul>
+          <p class="pc-includes-title">Tudo do Pro, mais:</p>
+          <ul class="pc-includes">
+            <li class="pc-include">
+              <span class="pc-include-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2.5"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg></span>
+              <span class="pc-include-text">Onboarding individual com especialista</span>
+            </li>
+            <li class="pc-include">
+              <span class="pc-include-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2.5"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg></span>
+              <span class="pc-include-text">Acesso antecipado a novos recursos</span>
+            </li>
+            <li class="pc-include">
+              <span class="pc-include-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="2.5"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg></span>
+              <span class="pc-include-text">Contrato com SLA garantido por escrito</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /pc-grid -->
+
+    <p class="pricing-guarantees">
+      🔒 Trial gratuito por 7 dias &nbsp;·&nbsp; Cancele quando quiser &nbsp;·&nbsp; API oficial LinkedIn &nbsp;·&nbsp; LGPD compliant
+    </p>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section--white" id="faq">
+  <div class="container--narrow">
+    <div class="section-header">
+      <span class="eyebrow">Dúvidas Frequentes</span>
+      <h2 class="section-heading">Antes de Você Perguntar "Isso Vai Banir Minha Conta?"</h2>
+      <p class="section-sub">As 7 perguntas que todo mundo faz antes de ativar.</p>
+    </div>
+    <div class="faq-item open">
+      <div class="faq-question" onclick="toggleFaq(this)">O InChat vai banir ou restringir minha conta do LinkedIn? <span class="faq-icon">+</span></div>
+      <div class="faq-answer">Não. Essa é a nossa garantia mais importante: o InChat opera exclusivamente via API oficial do LinkedIn — a mesma infraestrutura que empresas como HubSpot, Salesforce e Pipedrive usam. Scrapers e extensões de Chrome violam os Termos de Serviço do LinkedIn e estão sendo ativamente banidos. O InChat não usa nenhum desses mecanismos. Nenhuma conta InChat sofreu penalidade até hoje.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Em quanto tempo vejo o primeiro resultado? <span class="faq-icon">+</span></div>
+      <div class="faq-answer">O primeiro lead pode chegar ainda hoje. O setup completo leva menos de 2 minutos: conecte seu LinkedIn via API, adicione o link do seu recurso, escreva a mensagem de DM, ative. A partir daí, cada comentário no seu próximo post dispara o fluxo automaticamente.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Funciona para qualquer tipo de recurso ou lead magnet? <span class="faq-icon">+</span></div>
+      <div class="faq-answer">Sim. PDF, vídeo, link de inscrição, formulário, acesso a grupo privado, Notion público, Google Drive, página de vendas — qualquer URL funciona. Você configura o link uma vez e o InChat entrega para todo mundo que comentar, automaticamente.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Como funcionam as integrações com CRM? <span class="faq-icon">+</span></div>
+      <div class="faq-answer">No plano Pro e Agency, cada lead capturado é sincronizado em tempo real com o CRM da sua escolha: Clay, HubSpot, Make (Integromat), Notion, Zapier. Os dados enviados incluem: nome, sobrenome, cargo, empresa, URL do perfil LinkedIn e o texto exato do comentário original.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Como funciona o Plano Agency? Os clientes ficam separados? <span class="faq-icon">+</span></div>
+      <div class="faq-answer">Sim. Cada cliente tem seu próprio workspace completamente isolado — com suas próprias automações, leads, configurações e integrações. Você gerencia tudo a partir de um dashboard central. Nenhum dado de um cliente aparece para outro.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">Funciona se eu tiver posts com alto volume de comentários? <span class="faq-icon">+</span></div>
+      <div class="faq-answer">É exatamente para isso que foi construído. O InChat processa milhares de comentários simultaneamente sem limite de volume. Se você tiver um post viral com 1.000 comentários, todos serão processados e respondidos dentro da janela de 28 segundos — sem fila, sem delay, sem perda.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">O suporte é em português? <span class="faq-icon">+</span></div>
+      <div class="faq-answer">Sim. Time 100% brasileiro, suporte em PT-BR nativo. Chat em tempo real nos planos Pro e Agency. Email no Starter, com resposta em até 8 horas úteis. Para o plano Agency, SLA de resposta garantida em até 4 horas durante o horário comercial.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="cta-bg-accent" aria-hidden="true"></div>
+  <div class="cta-inner">
+    <span class="eyebrow">Comece Hoje</span>
+    <h2>Seu Próximo Lead Está Comentando no Seu Post. Agora Mesmo.</h2>
+    <p class="cta-tension">E em 4 horas, a janela fecha.</p>
+    <p class="cta-sub">Ou você ativa o sistema hoje — e nunca mais perde um lead por falta de follow-up.</p>
+    <ul class="cta-bullets">
+      <li><span>✓</span><span>Captura cada comentário — sem exceção, 24/7</span></li>
+      <li><span>✓</span><span>DM entregue em menos de 30 segundos por lead</span></li>
+      <li><span>✓</span><span>Pipeline automático no CRM da sua escolha</span></li>
+      <li><span>✓</span><span>7 dias grátis — sem compromisso</span></li>
+    </ul>
+    <div class="cta-btn-row">
+      <a href="#" class="btn btn-primary btn-lg">→ Ativar Meu Trial Grátis — 7 Dias</a>
+      <a href="#" class="btn btn-outline">Ver Demo em 2 Minutos →</a>
+    </div>
+    <p class="cta-secondary-link">Ative em 15 minutos · Sem onboarding obrigatório · Cancele quando quiser</p>
+    <p class="cta-guarantee">🔒 API oficial LinkedIn · LGPD compliant · Cancele quando quiser</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+
+    <!-- CTA Block -->
+    <div class="footer-cta-block">
+      <h3>Pronto para parar de perder leads?</h3>
+      <p>7 dias grátis. Cancele quando quiser.</p>
+      <div class="footer-cta-row">
+        <a href="#" class="btn btn-accent">Ativar Trial Grátis</a>
+        <a href="#" class="btn btn-outline-white">Ver Demo →</a>
+      </div>
+    </div>
+
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="brand_assets/inchat-full-logo-lightmode.png" alt="InChat">
+        </div>
+        <div class="footer-tagline">"Cada comentário, um lead."</div>
+        <p>A plataforma de automação LinkedIn para founders brasileiros que levam conteúdo a sério.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produto</h4>
+        <ul>
+          <li><a href="#">Como Funciona</a></li>
+          <li><a href="#">Preços</a></li>
+          <li><a href="#">Integrações</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#">Sobre Nós</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Afiliados</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Termos de Uso</a></li>
+          <li><a href="#">Privacidade</a></li>
+          <li><a href="#">LGPD</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 InChat · Todos os direitos reservados · Feito no Brasil 🇧🇷</span>
+    </div>
+  </div>
+  <div class="footer-wordmark" aria-hidden="true">InChat</div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Mobile menu
+  const burger = document.getElementById('nav-burger');
+  const mobileNav = document.getElementById('nav-mobile');
+  const mobileClose = document.getElementById('nav-mobile-close');
+  burger.addEventListener('click', () => mobileNav.classList.add('open'));
+  mobileClose.addEventListener('click', () => mobileNav.classList.remove('open'));
+  mobileNav.querySelectorAll('.nav-mobile-link').forEach(link => {
+    link.addEventListener('click', () => mobileNav.classList.remove('open'));
+  });
+
+  // Back to top + footer watermark — elements rendered after this script
+  document.addEventListener('DOMContentLoaded', () => {
+    // Back to top
+    const btt = document.getElementById('back-to-top');
+    if (btt) {
+      window.addEventListener('scroll', () => {
+        btt.classList.toggle('visible', window.scrollY > 400);
+      });
+    }
+    // Footer wordmark — exact viewport-width fill + reveal
+    const wm = document.querySelector('.footer-wordmark');
+    const fb = document.querySelector('.footer-bottom');
+    function sizeFooterWordmark() {
+      if (!wm || !fb) return;
+      const vw = document.documentElement.clientWidth;
+      let lo = 8, hi = 52;
+      for (let i = 0; i < 24; i++) {
+        const mid = (lo + hi) / 2;
+        wm.style.fontSize = mid + 'vw';
+        if (wm.scrollWidth <= vw) lo = mid;
+        else hi = mid;
+      }
+      wm.style.fontSize = lo + 'vw';
+      // Mask fades to transparent at 84% — push wordmark down so the transparent
+      // tail (16%) hangs below the footer boundary and is clipped by overflow:hidden.
+      // Footer padding = visible text height only → footer ends exactly at text fade.
+      const h = wm.offsetHeight;
+      const tail = Math.round(h * 0.16);
+      wm.style.bottom = '-' + tail + 'px';
+      fb.style.paddingBottom = (h - tail) + 'px';
+    }
+    sizeFooterWordmark();
+    window.addEventListener('resize', sizeFooterWordmark);
+    if (wm) {
+      const obs = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) { wm.classList.add('visible'); obs.disconnect(); }
+      }, { threshold: 0.1 });
+      obs.observe(wm);
+    }
+  });
+
+  function updateROI() {
+    const posts = parseInt(document.getElementById('posts').value);
+    const comments = parseInt(document.getElementById('comments').value);
+    const rate = parseInt(document.getElementById('rate').value);
+    const ticket = parseInt(document.getElementById('ticket').value);
+
+    document.getElementById('val-posts').textContent = posts;
+    document.getElementById('val-comments').textContent = comments;
+    document.getElementById('val-rate').textContent = rate + '%';
+    document.getElementById('val-ticket').textContent = 'R$' + ticket.toLocaleString('pt-BR');
+
+    const totalLeads = Math.round(posts * 4.3 * comments);
+    const conversions = Math.round(totalLeads * (rate / 100));
+    const revenue = conversions * ticket;
+    const roi = Math.round(revenue / 110);
+
+    const revenueEl = document.getElementById('out-revenue');
+    revenueEl.classList.add('updating');
+    setTimeout(() => {
+      revenueEl.textContent = 'R$' + revenue.toLocaleString('pt-BR');
+      revenueEl.classList.remove('updating');
+    }, 110);
+
+    document.getElementById('out-leads').textContent = totalLeads.toLocaleString('pt-BR');
+    document.getElementById('out-conversions').textContent = conversions.toLocaleString('pt-BR');
+    document.getElementById('out-roi').textContent = roi.toLocaleString('pt-BR') + 'x';
+  }
+
+  updateROI();
+
+  // ─── Pricing toggle ───
+  function positionPricingSlider() {
+    const inner  = document.getElementById('pricing-toggle-inner');
+    const slider = document.getElementById('pricing-slider');
+    const active = inner && inner.querySelector('.pricing-toggle-btn.active');
+    if (!slider || !active) return;
+    slider.style.left  = active.offsetLeft + 'px';
+    slider.style.width = active.offsetWidth + 'px';
+  }
+
+  function switchPricing(mode) {
+    const isAnnual = (mode === 'annual');
+    document.getElementById('toggle-monthly').classList.toggle('active', !isAnnual);
+    document.getElementById('toggle-annual').classList.toggle('active',   isAnnual);
+    positionPricingSlider();
+
+    document.querySelectorAll('.pc-price-num').forEach(el => {
+      el.classList.add('switching');
+      setTimeout(() => {
+        el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+        el.classList.remove('switching');
+      }, 180);
+    });
+    const period = isAnnual ? '/ano' : '/mês';
+    ['period-starter','period-pro','period-agency'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = period;
+    });
+  }
+
+  window.addEventListener('load', positionPricingSlider);
+
+  // ─── Pricing scroll reveal ───
+  (function () {
+    const els = document.querySelectorAll('.pricing-reveal');
+    if (!els.length) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const delay = parseFloat(el.dataset.pricingDelay || '0');
+        setTimeout(() => el.classList.add('revealed'), delay * 1000);
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.08 });
+    els.forEach(el => obs.observe(el));
+  })();
+
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // ─── Testimonials blur-reveal ───
+  (function () {
+    const cards = document.querySelectorAll('.testi-card');
+    if (!cards.length) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const delay = parseFloat(el.dataset.revealDelay || '0');
+        setTimeout(() => el.classList.add('revealed'), delay * 1000);
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.08 });
+    cards.forEach((card, i) => {
+      card.dataset.revealDelay = (0.1 * i + 0.1).toFixed(1);
+      obs.observe(card);
+    });
+  })();
+
+  // ─── Feature Steps auto-play ───
+  (function () {
+    const stepItems  = document.querySelectorAll('#feature-steps .feature-step-item');
+    const slides     = document.querySelectorAll('#feature-steps .feature-image-slide');
+    if (!stepItems.length) return;
+
+    const AUTO_PLAY = 4000; // ms per step
+    const TICK      = 100;
+    let current  = 0;
+    let progress = 0;
+    let timer    = null;
+
+    function getCircleContent(index, current) {
+      if (index < current) return '✓';
+      return String(index + 1);
+    }
+
+    function setActive(index) {
+      stepItems.forEach((item, i) => {
+        item.classList.remove('active', 'done');
+        const circle = item.querySelector('.feature-step-circle');
+        const bar    = item.querySelector('.feature-step-progress-bar');
+        if (i < index) {
+          item.classList.add('done');
+          circle.textContent = '✓';
+        } else {
+          circle.textContent = String(i + 1);
+        }
+        if (i === index) {
+          item.classList.add('active');
+          circle.textContent = i < index ? '✓' : String(i + 1);
+        }
+        if (bar) bar.style.width = (i < index) ? '100%' : '0%';
+      });
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
+
+    function tick() {
+      progress += (TICK / AUTO_PLAY) * 100;
+      const bar = stepItems[current] && stepItems[current].querySelector('.feature-step-progress-bar');
+      if (bar) bar.style.width = Math.min(progress, 100) + '%';
+      if (progress >= 100) {
+        progress = 0;
+        current  = (current + 1) % stepItems.length;
+        setActive(current);
+      }
+    }
+
+    setActive(0);
+    timer = setInterval(tick, TICK);
+
+    // Click to jump
+    stepItems.forEach((item, i) => {
+      item.addEventListener('click', () => {
+        clearInterval(timer);
+        progress = 0;
+        current  = i;
+        setActive(current);
+        timer = setInterval(tick, TICK);
+      });
+    });
+  })();
+</script>
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" aria-label="Voltar ao topo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 12V4M4 7.5L8 4l4 3.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+</body>
+</html>
