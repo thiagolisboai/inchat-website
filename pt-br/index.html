@@ -2102,6 +2102,12 @@
       .footer-top      { grid-template-columns: 1fr 1fr 1fr; }
       .hero-screenshot-wrap { padding: 0 1rem; }
     }
+    /* Tablets — collapse feature-steps to single column before mobile breakpoint */
+    @media (max-width: 900px) {
+      .feature-steps-grid       { grid-template-columns: 1fr; gap: 2.5rem; }
+      .feature-steps-media-wrap { position: static !important; }
+      .feature-steps-media      { height: 320px; }
+    }
     @media (max-width: 768px) {
       :root { --s-sm: 3rem; --s-md: 4.5rem; --s-lg: 6rem; }
       .app-mockup-body  { grid-template-columns: 1fr; }
