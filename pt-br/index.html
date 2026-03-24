@@ -1224,7 +1224,7 @@
 
     @media (max-width: 768px) {
       .feature-steps-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .feature-steps-media-wrap { position: static; }
+      .feature-steps-media-wrap { position: static !important; }
       .feature-steps-media { height: 240px; }
     }
 
@@ -2139,6 +2139,13 @@
 
       /* Diff table — ensure horizontal scroll */
       .table-wrap       { -webkit-overflow-scrolling: touch; }
+
+      /* Feature steps: remove sticky on mobile, let it flow naturally */
+      .feature-steps-media-wrap { position: static !important; }
+      .feature-steps-grid { gap: 2rem; }
+
+      /* Hero screenshot: hide on mobile to avoid first-fold conflict */
+      .hero-screenshot-wrap { display: none; }
     }
     @media (max-width: 480px) {
       /* Single column footer nav on very small screens */
@@ -2159,6 +2166,9 @@
       /* Pricing card body padding */
       .pc-body          { padding: 1.25rem; }
       .pc-header        { padding: 1.25rem 1.25rem 1rem; }
+
+      /* Feature steps media height on very small screens */
+      .feature-steps-media { height: 200px; }
     }
   </style>
 

@@ -1224,7 +1224,7 @@
 
     @media (max-width: 768px) {
       .feature-steps-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .feature-steps-media-wrap { position: static; }
+      .feature-steps-media-wrap { position: static !important; }
       .feature-steps-media { height: 240px; }
     }
 
@@ -2139,6 +2139,13 @@
 
       /* Diff table — ensure horizontal scroll */
       .table-wrap       { -webkit-overflow-scrolling: touch; }
+
+      /* Feature steps: remove sticky on mobile, let it flow naturally */
+      .feature-steps-media-wrap { position: static !important; }
+      .feature-steps-grid { gap: 2rem; }
+
+      /* Hero screenshot: hide on mobile to avoid first-fold conflict */
+      .hero-screenshot-wrap { display: none; }
     }
     @media (max-width: 480px) {
       /* Single column footer nav on very small screens */
@@ -2159,6 +2166,9 @@
       /* Pricing card body padding */
       .pc-body          { padding: 1.25rem; }
       .pc-header        { padding: 1.25rem 1.25rem 1rem; }
+
+      /* Feature steps media height on very small screens */
+      .feature-steps-media { height: 200px; }
     }
   </style>
 
@@ -2252,17 +2262,17 @@
       <span class="badge-arrow-wrap">→</span>
     </a>
     <h1 class="hero-anim-2">Your LinkedIn Content<br>Is Already <em>Generating Leads.</em><br><span class="h1-light">You're Just Not Capturing Them.</span></h1>
-    <p class="hero-sub hero-anim-3">Founders who post on LinkedIn lose 97% of leads because a comment doesn't become a conversation on its own. InChat closes that gap in up to 90 seconds — automatic, via official API, zero risk to your account.</p>
+    <p class="hero-sub hero-anim-3">Founders who post on LinkedIn lose 97% of leads because comments don't turn into conversations. InChat closes that gap in up to 90 seconds — automatic, official API, zero account risk.</p>
     <div class="hero-cta-row hero-anim-4">
       <div class="hero-btn-wrap">
-        <a href="#precos" class="btn btn-primary btn-lg">→ Start My Free Trial — 7 Days</a>
+        <a href="#precos" class="btn btn-primary btn-lg">→ Start Free Trial — 7 Days</a>
       </div>
       <a href="#como-funciona" class="btn btn-ghost btn-lg">See how it works</a>
     </div>
     <div class="hero-proofs hero-anim-5">
-      <span class="hero-proof-item"><span class="check">✓</span> 100+ founders already automating</span>
+      <span class="hero-proof-item"><span class="check">✓</span> 100+ founders automating</span>
       <span class="hero-proof-item"><span class="check">✓</span> 24K+ leads generated</span>
-      <span class="hero-proof-item"><span class="check">✓</span> Setup in under 5 minutes</span>
+      <span class="hero-proof-item"><span class="check">✓</span> Setup in under 5 min</span>
     </div>
   </div>
 
@@ -2712,7 +2722,7 @@
           <p class="testi-name">Fernanda Castro</p>
           <span class="testi-role">Consultant · FC Marketing Digital</span>
         </div>
-        <blockquote class="testi-quote">What used to be a like turned into a conversation — and a conversation turned into a client. R$12,400 in 30 days. The return was visible in the first week. There's no going back.</blockquote>
+        <blockquote class="testi-quote">What used to be a like turned into a conversation — and a conversation turned into a client. $2,400 in 30 days. The return was visible in the first week. There's no going back.</blockquote>
       </div>
 
       <div class="testi-card">
@@ -2807,7 +2817,7 @@
         <input type="range" id="rate" min="1" max="15" value="5" oninput="updateROI()">
       </div>
       <div class="slider-group">
-        <label>Average deal size <span id="val-ticket">R$500</span></label>
+        <label>Average deal size <span id="val-ticket">$500</span></label>
         <input type="range" id="ticket" min="97" max="5000" value="500" step="50" oninput="updateROI()">
       </div>
     </div>
@@ -2825,8 +2835,8 @@
         <div class="roi-strip-label">Estimated ROI</div>
       </div>
       <div class="roi-strip-item">
-        <div class="roi-strip-value">R$110/mo</div>
-        <div class="roi-strip-label">Starting from (Starter)</div>
+        <div class="roi-strip-value">$19/mo (Starter)</div>
+        <div class="roi-strip-label">Starting from</div>
       </div>
     </div>
     <a href="#precos" class="btn btn-primary btn-lg">→ Activate InChat and stop leaving money on the table</a>
@@ -2906,8 +2916,8 @@
           </div>
           <p class="pc-desc">For those starting to monetize their LinkedIn audience</p>
           <div class="pc-price-row">
-            <span class="pc-price-currency">R$</span>
-            <span class="pc-price-num" data-monthly="110" data-annual="88">110</span>
+            <span class="pc-price-currency">$</span>
+            <span class="pc-price-num" data-monthly="19" data-annual="15">19</span>
             <span class="pc-price-period" id="period-starter">/mo</span>
           </div>
         </div>
@@ -2954,8 +2964,8 @@
           </div>
           <p class="pc-desc">For founders taking LinkedIn seriously who want a predictable pipeline</p>
           <div class="pc-price-row">
-            <span class="pc-price-currency">R$</span>
-            <span class="pc-price-num" data-monthly="170" data-annual="136">170</span>
+            <span class="pc-price-currency">$</span>
+            <span class="pc-price-num" data-monthly="29" data-annual="23">29</span>
             <span class="pc-price-period" id="period-pro">/mo</span>
           </div>
         </div>
@@ -3001,8 +3011,8 @@
           </div>
           <p class="pc-desc">For agencies managing LinkedIn for multiple clients</p>
           <div class="pc-price-row">
-            <span class="pc-price-currency">R$</span>
-            <span class="pc-price-num" data-monthly="580" data-annual="464">580</span>
+            <span class="pc-price-currency">$</span>
+            <span class="pc-price-num" data-monthly="99" data-annual="79">99</span>
             <span class="pc-price-period" id="period-agency">/mo</span>
           </div>
         </div>
@@ -3231,17 +3241,17 @@
     document.getElementById('val-posts').textContent = posts;
     document.getElementById('val-comments').textContent = comments;
     document.getElementById('val-rate').textContent = rate + '%';
-    document.getElementById('val-ticket').textContent = 'R$' + ticket.toLocaleString('pt-BR');
+    document.getElementById('val-ticket').textContent = '$' + ticket.toLocaleString('en-US');
 
     const totalLeads = Math.round(posts * 4.3 * comments);
     const conversions = Math.round(totalLeads * (rate / 100));
     const revenue = conversions * ticket;
-    const roi = Math.round(revenue / 110);
+    const roi = Math.round(revenue / 19);
 
     const revenueEl = document.getElementById('out-revenue');
     revenueEl.classList.add('updating');
     setTimeout(() => {
-      revenueEl.textContent = 'R$' + revenue.toLocaleString('pt-BR');
+      revenueEl.textContent = '$' + revenue.toLocaleString('en-US');
       revenueEl.classList.remove('updating');
     }, 110);
 
