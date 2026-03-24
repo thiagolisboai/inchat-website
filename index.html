@@ -2100,6 +2100,7 @@
     @media (max-width: 1024px) {
       .cards-4         { grid-template-columns: repeat(2,1fr); }
       .footer-top      { grid-template-columns: 1fr 1fr 1fr; }
+      .hero-screenshot-wrap { padding: 0 1rem; }
     }
     @media (max-width: 768px) {
       :root { --s-sm: 3rem; --s-md: 4.5rem; --s-lg: 6rem; }
@@ -2115,6 +2116,49 @@
       .roi-strip-item   { flex: 0 0 50%; }
       .footer-top       { grid-template-columns: 1fr 1fr; }
       .setup-total      { flex-direction: column; gap: 0.375rem; text-align: center; }
+
+      /* Hero CTA buttons — stack vertically on mobile */
+      .hero-cta-row     { flex-direction: column; align-items: stretch; }
+      .hero-btn-wrap,
+      .hero-cta-row > .btn { width: 100%; }
+      .hero-cta-row > .btn { justify-content: center; }
+
+      /* Final CTA buttons — stack */
+      .cta-btn-row      { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+      .cta-btn-row .btn { width: 100%; justify-content: center; }
+
+      /* Footer CTA buttons — stack */
+      .footer-cta-row   { flex-direction: column; align-items: stretch; gap: 0.625rem; }
+      .footer-cta-row .btn { width: 100%; justify-content: center; }
+
+      /* Hero proofs — tighter wrap */
+      .hero-proofs      { gap: 0.625rem 1.25rem; }
+
+      /* Section header spacing */
+      .section-header   { margin-bottom: 2.5rem; }
+
+      /* Diff table — ensure horizontal scroll */
+      .table-wrap       { -webkit-overflow-scrolling: touch; }
+    }
+    @media (max-width: 480px) {
+      /* Single column footer nav on very small screens */
+      .footer-top       { grid-template-columns: 1fr; }
+
+      /* ROI strip — 1 item per row */
+      .roi-strip-item   { flex: 0 0 100%; }
+
+      /* Stats — single column */
+      .stats-grid       { grid-template-columns: 1fr; }
+
+      /* Hero proof row — column */
+      .hero-proofs      { flex-direction: column; align-items: center; gap: 0.375rem; }
+
+      /* Reduce hero padding slightly */
+      .hero-content-wrap { padding-top: 5rem; }
+
+      /* Pricing card body padding */
+      .pc-body          { padding: 1.25rem; }
+      .pc-header        { padding: 1.25rem 1.25rem 1rem; }
     }
   </style>
 
@@ -2147,8 +2191,8 @@
         <button class="lang-btn" data-lang="en" title="English (US)">🇺🇸</button>
       </div>
       <div class="nav-actions">
-        <a href="#" class="nav-signin">Entrar</a>
-        <a href="#" class="btn btn-primary btn-sm">Começar Grátis</a>
+        <a href="https://app.inchat.im/auth/login" class="nav-signin">Entrar</a>
+        <a href="https://app.inchat.im/auth/cadastro" class="btn btn-primary btn-sm">Começar Grátis</a>
       </div>
       <button class="nav-burger" id="nav-burger" aria-label="Abrir menu">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -2176,8 +2220,8 @@
         <li><a href="#faq"           class="nav-mobile-link">FAQ</a></li>
       </ul>
       <div class="nav-mobile-actions">
-        <a href="#" class="btn btn-outline" style="width:100%;justify-content:center;">Entrar</a>
-        <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">→ Começar Grátis</a>
+        <a href="https://app.inchat.im/auth/login" class="btn btn-outline" style="width:100%;justify-content:center;">Entrar</a>
+        <a href="https://app.inchat.im/auth/cadastro" class="btn btn-primary" style="width:100%;justify-content:center;">→ Começar Grátis</a>
       </div>
     </div>
   </div>
@@ -2211,7 +2255,7 @@
     <p class="hero-sub hero-anim-3">Founders que publicam no LinkedIn perdem 97% dos leads porque comentário não vira conversa sozinho. O InChat fecha esse gap em até 90 segundos — automático, via API oficial, sem risco para sua conta.</p>
     <div class="hero-cta-row hero-anim-4">
       <div class="hero-btn-wrap">
-        <a href="#" class="btn btn-primary btn-lg">→ Ativar Meu Trial Grátis — 7 Dias</a>
+        <a href="#precos" class="btn btn-primary btn-lg">→ Ativar Meu Trial Grátis — 7 Dias</a>
       </div>
       <a href="#como-funciona" class="btn btn-ghost btn-lg">Ver como funciona</a>
     </div>
@@ -2785,7 +2829,7 @@
         <div class="roi-strip-label">A partir de (Starter)</div>
       </div>
     </div>
-    <a href="#" class="btn btn-primary btn-lg">→ Ativar o InChat e parar de deixar na mesa</a>
+    <a href="#precos" class="btn btn-primary btn-lg">→ Ativar o InChat e parar de deixar na mesa</a>
     <p class="roi-legal">Calculado com base em: (posts/semana × 4,3) × comentários/post × taxa de conversão × ticket médio. Estimativa conservadora. Resultados reais variam conforme nicho, audiência e oferta.</p>
   </div>
 </section>
@@ -2868,7 +2912,7 @@
           </div>
         </div>
         <div class="pc-body">
-          <a href="#" class="pc-btn pc-btn--dark">Começar com Starter</a>
+          <a href="https://app.inchat.im/auth/cadastro" class="pc-btn pc-btn--dark">Começar com Starter</a>
           <ul class="pc-features">
             <li class="pc-feature">
               <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
@@ -2916,7 +2960,7 @@
           </div>
         </div>
         <div class="pc-body">
-          <a href="#" class="pc-btn pc-btn--blue">Ativar Pro — 7 Dias Grátis</a>
+          <a href="https://app.inchat.im/auth/cadastro" class="pc-btn pc-btn--blue">Ativar Pro — 7 Dias Grátis</a>
           <ul class="pc-features">
             <li class="pc-feature">
               <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
@@ -2963,7 +3007,7 @@
           </div>
         </div>
         <div class="pc-body">
-          <a href="#" class="pc-btn pc-btn--dark">Falar com a Equipe Agency →</a>
+          <a href="mailto:hello@inchat.im" class="pc-btn pc-btn--dark">Falar com a Equipe Agency →</a>
           <ul class="pc-features">
             <li class="pc-feature">
               <span class="pc-feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
@@ -3054,13 +3098,13 @@
     <p class="cta-sub">Ou você ativa o sistema hoje — e nunca mais perde um lead por falta de follow-up.</p>
     <ul class="cta-bullets">
       <li><span>✓</span><span>Captura cada comentário — sem exceção, 24/7</span></li>
-      <li><span>✓</span><span>DM entregue em menos de 30 segundos por lead</span></li>
+      <li><span>✓</span><span>DM entregue em até 90 segundos por lead</span></li>
       <li><span>✓</span><span>Pipeline automático no CRM da sua escolha</span></li>
       <li><span>✓</span><span>7 dias grátis — sem compromisso</span></li>
     </ul>
     <div class="cta-btn-row">
-      <a href="#" class="btn btn-primary btn-lg">→ Ativar Meu Trial Grátis — 7 Dias</a>
-      <a href="#" class="btn btn-outline">Ver Demo em 2 Minutos →</a>
+      <a href="https://app.inchat.im/auth/cadastro" class="btn btn-primary btn-lg">→ Ativar Meu Trial Grátis — 7 Dias</a>
+      <a href="#como-funciona" class="btn btn-outline">Ver Demo em 2 Minutos →</a>
     </div>
     <p class="cta-secondary-link">Ative em 15 minutos · Sem onboarding obrigatório · Cancele quando quiser</p>
     <p class="cta-guarantee">🔒 API oficial LinkedIn · LGPD compliant · Cancele quando quiser</p>
@@ -3102,7 +3146,7 @@
         <ul>
           <li><a href="#">Sobre Nós</a></li>
           <li><a href="#">Blog</a></li>
-          <li><a href="#">Afiliados</a></li>
+          <li><a href="https://inchat.lemonfy.io/" target="_blank" rel="noopener">Afiliados</a></li>
         </ul>
       </div>
       <div class="footer-col">
