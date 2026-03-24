@@ -1084,6 +1084,7 @@
     }
 
     .feature-steps-media {
+      position: relative;
       height: 460px;
       border-radius: var(--r-lg);
       overflow: hidden;
@@ -2098,83 +2099,86 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1024px) {
-      .cards-4         { grid-template-columns: repeat(2,1fr); }
-      .footer-top      { grid-template-columns: 1fr 1fr 1fr; }
+      .cards-4              { grid-template-columns: repeat(2,1fr); }
+      .footer-top           { grid-template-columns: 1fr 1fr 1fr; }
       .hero-screenshot-wrap { padding: 0 1rem; }
     }
-    /* Tablets — collapse feature-steps to single column before mobile breakpoint */
+
+    /* Tablets: collapse feature-steps to 1-col, de-sticky animation */
     @media (max-width: 900px) {
       .feature-steps-grid       { grid-template-columns: 1fr; gap: 2.5rem; }
-      .feature-steps-media-wrap { position: static !important; }
+      .feature-steps-media-wrap { position: static; top: auto; }
       .feature-steps-media      { height: 320px; }
+      .feature-steps-caption    { margin-bottom: 0.5rem; }
     }
+
     @media (max-width: 768px) {
-      :root { --s-sm: 3rem; --s-md: 4.5rem; --s-lg: 6rem; }
-      .app-mockup-body  { grid-template-columns: 1fr; }
+      :root {
+        --s-sm: 3rem;
+        --s-md: 4.5rem;
+        --s-lg: 6rem;
+      }
+
+      /* Grids */
+      .app-mockup-body    { grid-template-columns: 1fr; }
       .app-mockup-sidebar { display: none; }
-      .cards-3          { grid-template-columns: 1fr; }
-      .testi-grid, .pricing-grid, .icp-grid { grid-template-columns: 1fr; }
-      .stats-grid       { grid-template-columns: repeat(2,1fr); }
-      .cards-4          { grid-template-columns: 1fr; }
-      .nav-links        { display: none; }
-      .roi-sliders      { grid-template-columns: 1fr; }
-      .roi-strip        { flex-wrap: wrap; }
-      .roi-strip-item   { flex: 0 0 50%; }
-      .footer-top       { grid-template-columns: 1fr 1fr; }
-      .setup-total      { flex-direction: column; gap: 0.375rem; text-align: center; }
+      .cards-3            { grid-template-columns: 1fr; }
+      .cards-4            { grid-template-columns: 1fr; }
+      .testi-grid         { grid-template-columns: 1fr; }
+      .pricing-grid       { grid-template-columns: 1fr; }
+      .icp-grid           { grid-template-columns: 1fr; }
+      .stats-grid         { grid-template-columns: repeat(2,1fr); }
+      .roi-sliders        { grid-template-columns: 1fr; }
+      .roi-strip          { flex-wrap: wrap; }
+      .roi-strip-item     { flex: 0 0 50%; }
+      .footer-top         { grid-template-columns: 1fr 1fr; }
 
-      /* Hero CTA buttons — stack vertically on mobile */
-      .hero-cta-row     { flex-direction: column; align-items: stretch; }
-      .hero-btn-wrap,
-      .hero-cta-row > .btn { width: 100%; }
-      .hero-cta-row > .btn { justify-content: center; }
+      /* Nav */
+      .nav-links          { display: none; }
 
-      /* Final CTA buttons — stack */
-      .cta-btn-row      { flex-direction: column; align-items: stretch; gap: 0.75rem; }
-      .cta-btn-row .btn { width: 100%; justify-content: center; }
+      /* Feature steps — fully de-sticky and single column */
+      .feature-steps-grid       { grid-template-columns: 1fr; gap: 2rem; }
+      .feature-steps-media-wrap { position: static !important; top: auto !important; }
+      .feature-steps-media      { height: 260px; position: relative; }
+      .feature-steps-caption    { margin-bottom: 0.5rem; }
 
-      /* Footer CTA buttons — stack */
-      .footer-cta-row   { flex-direction: column; align-items: stretch; gap: 0.625rem; }
-      .footer-cta-row .btn { width: 100%; justify-content: center; }
+      /* Hero screenshot: hide on mobile to prevent first-fold conflict */
+      .hero-screenshot-wrap     { display: none; }
 
-      /* Hero proofs — tighter wrap */
-      .hero-proofs      { gap: 0.625rem 1.25rem; }
+      /* Hero CTA — stack buttons */
+      .hero-cta-row             { flex-direction: column; align-items: stretch; }
+      .hero-btn-wrap            { width: 100%; }
+      .hero-cta-row > .btn      { width: 100%; justify-content: center; }
 
-      /* Section header spacing */
-      .section-header   { margin-bottom: 2.5rem; }
+      /* Final CTA — stack buttons */
+      .cta-btn-row              { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+      .cta-btn-row .btn         { width: 100%; justify-content: center; }
 
-      /* Diff table — ensure horizontal scroll */
-      .table-wrap       { -webkit-overflow-scrolling: touch; }
+      /* Footer CTA — stack buttons */
+      .footer-cta-row           { flex-direction: column; align-items: stretch; gap: 0.625rem; }
+      .footer-cta-row .btn      { width: 100%; justify-content: center; }
 
-      /* Feature steps: remove sticky on mobile, let it flow naturally */
-      .feature-steps-media-wrap { position: static !important; }
-      .feature-steps-grid { gap: 2rem; }
+      /* Spacing */
+      .hero-proofs              { gap: 0.625rem 1.25rem; }
+      .section-header           { margin-bottom: 2.5rem; }
+      .setup-total              { flex-direction: column; gap: 0.375rem; text-align: center; }
 
-      /* Hero screenshot: hide on mobile to avoid first-fold conflict */
-      .hero-screenshot-wrap { display: none; }
+      /* Diff table */
+      .table-wrap               { -webkit-overflow-scrolling: touch; }
+
+      /* PC grid already handled above via .pricing-grid */
+      .pc-grid                  { grid-template-columns: 1fr; }
     }
+
     @media (max-width: 480px) {
-      /* Single column footer nav on very small screens */
-      .footer-top       { grid-template-columns: 1fr; }
-
-      /* ROI strip — 1 item per row */
-      .roi-strip-item   { flex: 0 0 100%; }
-
-      /* Stats — single column */
-      .stats-grid       { grid-template-columns: 1fr; }
-
-      /* Hero proof row — column */
-      .hero-proofs      { flex-direction: column; align-items: center; gap: 0.375rem; }
-
-      /* Reduce hero padding slightly */
-      .hero-content-wrap { padding-top: 5rem; }
-
-      /* Pricing card body padding */
-      .pc-body          { padding: 1.25rem; }
-      .pc-header        { padding: 1.25rem 1.25rem 1rem; }
-
-      /* Feature steps media height on very small screens */
-      .feature-steps-media { height: 200px; }
+      .footer-top               { grid-template-columns: 1fr; }
+      .roi-strip-item           { flex: 0 0 100%; }
+      .stats-grid               { grid-template-columns: 1fr; }
+      .hero-proofs              { flex-direction: column; align-items: center; gap: 0.375rem; }
+      .hero-content-wrap        { padding-top: 5rem; }
+      .pc-body                  { padding: 1.25rem; }
+      .pc-header                { padding: 1.25rem 1.25rem 1rem; }
+      .feature-steps-media      { height: 220px; }
     }
   </style>
 
@@ -2267,11 +2271,11 @@
       <span class="badge-divider"></span>
       <span class="badge-arrow-wrap">→</span>
     </a>
-    <h1 class="hero-anim-2">Your LinkedIn Content<br>Is Already <em>Generating Leads.</em><br><span class="h1-light">You're Not Capturing Them.</span></h1>
+    <h1 class="hero-anim-2">Your LinkedIn Content Is<br>Already <em>Generating Leads.</em><br><span class="h1-light">You're Not Capturing Them.</span></h1>
     <p class="hero-sub hero-anim-3">Founders who post on LinkedIn lose 97% of leads because comments don't turn into conversations. InChat closes that gap in up to 90 seconds — automatic, official API, zero account risk.</p>
     <div class="hero-cta-row hero-anim-4">
       <div class="hero-btn-wrap">
-        <a href="#precos" class="btn btn-primary btn-lg">→ Start Free Trial — 7 Days</a>
+        <a href="#precos" class="btn btn-primary btn-lg">→ Activate My Free Trial — 7 Days</a>
       </div>
       <a href="#como-funciona" class="btn btn-ghost btn-lg">See how it works</a>
     </div>
