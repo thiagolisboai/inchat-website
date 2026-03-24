@@ -91,6 +91,10 @@
       --s-md: 6rem;
       --s-lg: 8rem;
 
+      --ease-fast: 0.16s ease;
+      --ease-normal: 0.3s ease;
+      --ease-slow: 0.5s ease;
+
       /* Legacy aliases so HTML doesn't break */
       --text-1:   var(--text);
       --muted:    var(--text-2);
@@ -1254,12 +1258,6 @@
     .fmock-lead-badge--read { background: var(--bg-3); color: var(--text-3); }
     .fmock-lead-badge--converted { background: #dcfce7; color: #16a34a; }
 
-    @media (max-width: 768px) {
-      .feature-steps-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .feature-steps-media-wrap { position: static !important; }
-      .feature-steps-media { height: 420px; }
-    }
-
     /* ─── SETUP ─── */
     .setup-card {
       background: var(--white);
@@ -1949,9 +1947,19 @@
       line-height: 1.4;
       user-select: none;
       transition: color 0.15s;
+      width: 100%; text-align: left; background: none; border: none;
     }
     .faq-question:hover { color: var(--accent); }
     .faq-item.open .faq-question { color: var(--pink); }
+
+    .lang-btn:focus-visible,
+    .feature-step-item:focus-visible,
+    .faq-question:focus-visible,
+    .pricing-toggle-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
     .faq-icon {
       font-size: 1rem;
       font-weight: 400;
@@ -2057,20 +2065,20 @@
       margin-bottom: 2.75rem;
     }
     .footer-cta-block h3 { font-size: var(--h5); color: #fff; font-weight: 600; margin-bottom: 0.375rem; }
-    .footer-cta-block p  { font-size: var(--body-xs); color: rgba(255,255,255,0.38); margin-bottom: 1.375rem; }
+    .footer-cta-block p  { font-size: var(--body-xs); color: rgba(255,255,255,0.72); margin-bottom: 1.375rem; }
     .footer-cta-row { display: flex; align-items: center; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
 
     .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 2.75rem; }
     .footer-brand { max-width: 280px; }
     .footer-logo  { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.875rem; }
     .footer-logo img { height: 22px; width: auto; filter: brightness(0) invert(1) opacity(0.8); }
-    .footer-tagline { font-size: var(--body-xs); color: rgba(255,255,255,0.35); font-style: italic; margin-bottom: 0.625rem; }
+    .footer-tagline { font-size: var(--body-xs); color: rgba(255,255,255,0.65); font-style: italic; margin-bottom: 0.625rem; }
     .footer-brand p { font-size: var(--body-xs); color: rgba(255,255,255,0.4); line-height: 1.65; }
-    .footer-col h4 { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 1.125rem; }
+    .footer-col h4 { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 1.125rem; }
     .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
     .footer-col ul a { font-size: var(--body-xs); color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.15s; }
     .footer-col ul a:hover { color: #fff; }
-    .footer-bottom { padding-top: 1.5rem; padding-bottom: 8rem; border-top: 1px solid var(--dark-border); font-size: var(--body-xs); color: rgba(255,255,255,0.25); text-align: center; position: relative; z-index: 1; }
+    .footer-bottom { padding-top: 1.5rem; padding-bottom: 8rem; border-top: 1px solid var(--dark-border); font-size: var(--body-xs); color: rgba(255,255,255,0.55); text-align: center; position: relative; z-index: 1; }
 
     /* ─── FOOTER WATERMARK ─── */
     .footer-wordmark {
@@ -2141,6 +2149,12 @@
       .feature-steps-media-wrap { position: static; top: auto; }
       .feature-steps-media      { height: 420px; }
       .feature-steps-caption    { margin-bottom: 0.5rem; }
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+      :root {
+        --s-sm: 3.5rem;
+        --s-md: 5rem;
+        --s-lg: 7rem;
+      }
     }
 
     @media (max-width: 768px) {
@@ -2213,9 +2227,19 @@
       .container, .container--narrow { padding: 0 1.25rem; }
       .btn                      { max-width: 100%; white-space: normal; text-align: center; }
     }
+
+    /* ─── REDUCED MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+    }
   </style>
 
-  <!-- Microsoft Clarity — substitua YOUR_PROJECT_ID pelo ID real em clarity.microsoft.com -->
+  <!-- Microsoft Clarity — replace YOUR_PROJECT_ID with your real project ID from clarity.microsoft.com -->
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -2240,8 +2264,8 @@
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="nav-lang">
-        <button class="lang-btn" data-lang="pt" title="Português (Brasil)">🇧🇷</button>
-        <button class="lang-btn lang-btn--active" data-lang="en" title="English (US)">🇺🇸</button>
+        <button class="lang-btn" data-lang="pt" title="Português (Brasil)" aria-label="Switch to Português (Brasil)">🇧🇷</button>
+        <button class="lang-btn lang-btn--active" data-lang="en" title="English (US)" aria-label="Switch to English (US)">🇺🇸</button>
       </div>
       <div class="nav-actions">
         <a href="https://app.inchat.im/auth/login" class="nav-signin">Log In</a>
@@ -2273,8 +2297,8 @@
         <li><a href="#faq"           class="nav-mobile-link">FAQ</a></li>
       </ul>
       <div class="nav-mobile-lang">
-        <button class="lang-btn" data-lang="pt" title="Português (Brasil)">🇧🇷 PT</button>
-        <button class="lang-btn lang-btn--active" data-lang="en" title="English (US)">🇺🇸 EN</button>
+        <button class="lang-btn" data-lang="pt" title="Português (Brasil)" aria-label="Switch to Português (Brasil)">🇧🇷 PT</button>
+        <button class="lang-btn lang-btn--active" data-lang="en" title="English (US)" aria-label="Switch to English (US)">🇺🇸 EN</button>
       </div>
       <div class="nav-mobile-actions">
         <a href="https://app.inchat.im/auth/login" class="btn btn-outline" style="width:100%;justify-content:center;">Log In</a>
@@ -2464,7 +2488,7 @@
       <!-- LEFT: Step list -->
       <div class="feature-step-list">
 
-        <div class="feature-step-item active" data-index="0">
+        <div class="feature-step-item active" data-index="0" tabindex="0">
           <div class="feature-step-circle">✓</div>
           <div class="feature-step-content">
             <div class="feature-step-title">Connect Your LinkedIn</div>
@@ -2473,7 +2497,7 @@
           </div>
         </div>
 
-        <div class="feature-step-item" data-index="1">
+        <div class="feature-step-item" data-index="1" tabindex="0">
           <div class="feature-step-circle">2</div>
           <div class="feature-step-content">
             <div class="feature-step-title">Add What You Want to Deliver</div>
@@ -2482,7 +2506,7 @@
           </div>
         </div>
 
-        <div class="feature-step-item" data-index="2">
+        <div class="feature-step-item" data-index="2" tabindex="0">
           <div class="feature-step-circle">3</div>
           <div class="feature-step-content">
             <div class="feature-step-title">Personalize Your DM Message</div>
@@ -2491,7 +2515,7 @@
           </div>
         </div>
 
-        <div class="feature-step-item" data-index="3">
+        <div class="feature-step-item" data-index="3" tabindex="0">
           <div class="feature-step-circle">4</div>
           <div class="feature-step-content">
             <div class="feature-step-title">Sleep. InChat Works.</div>
@@ -2852,23 +2876,23 @@
     </div>
     <div class="roi-sliders">
       <div class="slider-group">
-        <label>Posts per week <span id="val-posts">3</span></label>
+        <label for="posts">Posts per week <span id="val-posts">3</span></label>
         <input type="range" id="posts" min="1" max="7" value="3" oninput="updateROI()">
       </div>
       <div class="slider-group">
-        <label>Comments per post <span id="val-comments">50</span></label>
+        <label for="comments">Comments per post <span id="val-comments">50</span></label>
         <input type="range" id="comments" min="10" max="200" value="50" oninput="updateROI()">
       </div>
       <div class="slider-group">
-        <label>Conversion rate <span id="val-rate">5%</span></label>
+        <label for="rate">Conversion rate <span id="val-rate">5%</span></label>
         <input type="range" id="rate" min="1" max="15" value="5" oninput="updateROI()">
       </div>
       <div class="slider-group">
-        <label>Average deal size <span id="val-ticket">$100</span></label>
+        <label for="ticket">Average deal size <span id="val-ticket">$100</span></label>
         <input type="range" id="ticket" min="30" max="2000" value="100" step="10" oninput="updateROI()">
       </div>
     </div>
-    <div class="roi-strip">
+    <div class="roi-strip" role="status" aria-live="polite">
       <div class="roi-strip-item">
         <div class="roi-strip-value" id="out-leads">—</div>
         <div class="roi-strip-label">Leads lost/month</div>
@@ -3115,31 +3139,31 @@
       <p class="section-sub">The 7 questions everyone asks before activating.</p>
     </div>
     <div class="faq-item open">
-      <div class="faq-question" onclick="toggleFaq(this)">Will InChat ban or restrict my LinkedIn account? <span class="faq-icon">+</span></div>
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="true">Will InChat ban or restrict my LinkedIn account? <span class="faq-icon">+</span></button>
       <div class="faq-answer">No. This is our most important guarantee: InChat operates exclusively via LinkedIn's official API — the same infrastructure used by companies like HubSpot, Salesforce, and Pipedrive. Scrapers and Chrome extensions violate LinkedIn's Terms of Service and are being actively banned. InChat uses none of those mechanisms. No InChat account has faced a penalty to date.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How quickly will I see the first result? <span class="faq-icon">+</span></div>
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">How quickly will I see the first result? <span class="faq-icon">+</span></button>
       <div class="faq-answer">The first lead can arrive today. The full setup takes less than 5 minutes: connect your LinkedIn via API, add the link to your resource, write the DM message, activate. From that point, every comment on your next post triggers the flow automatically.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">Does it work with any type of resource or lead magnet? <span class="faq-icon">+</span></div>
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">Does it work with any type of resource or lead magnet? <span class="faq-icon">+</span></button>
       <div class="faq-answer">Yes. PDF, video, registration link, form, private group access, public Notion, Google Drive, sales page — any URL works. You configure the link once and InChat delivers it to everyone who comments, automatically.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How do CRM integrations work? <span class="faq-icon">+</span></div>
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">How do CRM integrations work? <span class="faq-icon">+</span></button>
       <div class="faq-answer">On the Pro and Agency plans, each captured lead is synced in real-time with the CRM of your choice: Clay, HubSpot, Make (Integromat), Notion, Zapier. The data sent includes: first name, last name, title, company, LinkedIn profile URL, and the exact text of the original comment.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How does the Agency Plan work? Are clients kept separate? <span class="faq-icon">+</span></div>
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">How does the Agency Plan work? Are clients kept separate? <span class="faq-icon">+</span></button>
       <div class="faq-answer">Yes. Each client has their own completely isolated workspace — with their own automations, leads, settings, and integrations. You manage everything from a central dashboard. No data from one client is visible to another.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">Does it work if I have posts with high comment volume? <span class="faq-icon">+</span></div>
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">Does it work if I have posts with high comment volume? <span class="faq-icon">+</span></button>
       <div class="faq-answer">That's exactly what it was built for. InChat processes thousands of comments simultaneously with no volume limit. If you have a viral post with 1,000 comments, all of them will be processed and responded to within the 90-second window — no queue, no delay, no loss.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">Is support available in English? <span class="faq-icon">+</span></div>
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">Is support available in English? <span class="faq-icon">+</span></button>
       <div class="faq-answer">Yes. Real-time chat on Pro and Agency plans. Email on Starter, with a response within 8 business hours. For the Agency plan, guaranteed response SLA within 4 hours during business hours.</div>
     </div>
   </div>
@@ -3360,8 +3384,13 @@
   function toggleFaq(btn) {
     const item = btn.parentElement;
     const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      const q = i.querySelector('.faq-question');
+      if (q) q.setAttribute('aria-expanded', 'false');
+    });
     if (!isOpen) item.classList.add('open');
+    btn.setAttribute('aria-expanded', btn.closest('.faq-item').classList.contains('open') ? 'true' : 'false');
   }
 
   // ─── Testimonials blur-reveal ───
