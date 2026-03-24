@@ -405,7 +405,38 @@
       display: flex;
       flex-direction: column;
       gap: 0.625rem;
-      padding-top: 2rem;
+      padding-top: 1.25rem;
+    }
+
+    /* Language selector inside mobile menu */
+    .nav-mobile-lang {
+      display: flex;
+      gap: 0.625rem;
+      padding: 1.25rem 0 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-mobile-lang .lang-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: var(--font);
+      font-size: var(--body-sm);
+      font-weight: 600;
+      color: var(--text-2);
+      padding: 0.625rem 1rem;
+      border-radius: var(--r-md);
+      border: 1.5px solid var(--border);
+      background: var(--bg-2);
+      opacity: 1;
+      transition: all 0.15s;
+    }
+    .nav-mobile-lang .lang-btn--active {
+      background: var(--white);
+      border-color: var(--accent);
+      color: var(--text);
+      box-shadow: 0 0 0 2px var(--accent-soft);
     }
 
     @media (max-width: 900px) { .nav-links { display: none; } }
@@ -1226,7 +1257,7 @@
     @media (max-width: 768px) {
       .feature-steps-grid { grid-template-columns: 1fr; gap: 2rem; }
       .feature-steps-media-wrap { position: static !important; }
-      .feature-steps-media { height: 240px; }
+      .feature-steps-media { height: 420px; }
     }
 
     /* ─── SETUP ─── */
@@ -2108,7 +2139,7 @@
     @media (max-width: 900px) {
       .feature-steps-grid       { grid-template-columns: 1fr; gap: 2.5rem; }
       .feature-steps-media-wrap { position: static; top: auto; }
-      .feature-steps-media      { height: 320px; }
+      .feature-steps-media      { height: 420px; }
       .feature-steps-caption    { margin-bottom: 0.5rem; }
     }
 
@@ -2139,7 +2170,7 @@
       /* Feature steps — fully de-sticky and single column */
       .feature-steps-grid       { grid-template-columns: 1fr; gap: 2rem; }
       .feature-steps-media-wrap { position: static !important; top: auto !important; }
-      .feature-steps-media      { height: 260px; position: relative; }
+      .feature-steps-media      { height: 420px; position: relative; }
       .feature-steps-caption    { margin-bottom: 0.5rem; }
 
       /* Hero screenshot: hide on mobile to prevent first-fold conflict */
@@ -2178,7 +2209,9 @@
       .hero-content-wrap        { padding-top: 5rem; }
       .pc-body                  { padding: 1.25rem; }
       .pc-header                { padding: 1.25rem 1.25rem 1rem; }
-      .feature-steps-media      { height: 220px; }
+      .feature-steps-media      { height: 380px; }
+      .container, .container--narrow { padding: 0 1.25rem; }
+      .btn                      { max-width: 100%; white-space: normal; text-align: center; }
     }
   </style>
 
@@ -2239,6 +2272,10 @@
         <li><a href="#precos"        class="nav-mobile-link">Preços</a></li>
         <li><a href="#faq"           class="nav-mobile-link">FAQ</a></li>
       </ul>
+      <div class="nav-mobile-lang">
+        <button class="lang-btn lang-btn--active" data-lang="pt" title="Português (Brasil)">🇧🇷 PT</button>
+        <button class="lang-btn" data-lang="en" title="English (US)">🇺🇸 EN</button>
+      </div>
       <div class="nav-mobile-actions">
         <a href="https://app.inchat.im/auth/login" class="btn btn-outline" style="width:100%;justify-content:center;">Entrar</a>
         <a href="https://app.inchat.im/auth/cadastro" class="btn btn-primary" style="width:100%;justify-content:center;">→ Começar Grátis</a>
